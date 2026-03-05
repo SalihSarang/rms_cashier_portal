@@ -1,0 +1,12 @@
+abstract class AuthEvent {}
+
+class CheckAuthEvent extends AuthEvent {}
+
+class SignInEvent extends AuthEvent {
+  final String email;
+  final String password;
+
+  SignInEvent(this.email, this.password);
+}
+
+class SignOutEvent extends AuthEvent {}
