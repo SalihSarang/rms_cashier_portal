@@ -5,7 +5,9 @@ import 'appbar_logo.dart';
 import 'appbar_profile.dart';
 
 class BillingAppBar extends StatelessWidget implements PreferredSizeWidget {
-  const BillingAppBar({super.key});
+  final bool showActions;
+
+  const BillingAppBar({super.key, this.showActions = true});
 
   @override
   Size get preferredSize => const Size.fromHeight(80);
@@ -15,12 +17,18 @@ class BillingAppBar extends StatelessWidget implements PreferredSizeWidget {
     return Container(
       color: NeutralColors.darkBackground,
       padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
-      child: const Row(
+      child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          AppBarLogo(),
+          const AppBarLogo(),
           Row(
-            children: [AppBarActions(), SizedBox(width: 32), AppBarProfile()],
+            children: [
+              if (showActions) ...[
+                const AppBarActions(),
+                const SizedBox(width: 32),
+              ],
+              const AppBarProfile(),
+            ],
           ),
         ],
       ),

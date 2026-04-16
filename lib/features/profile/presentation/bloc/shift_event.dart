@@ -11,3 +11,15 @@ class EndShiftEvent extends ShiftEvent {
 
   EndShiftEvent(this.uid);
 }
+
+class PauseShiftEvent extends ShiftEvent {
+  final String uid;
+
+  PauseShiftEvent(this.uid);
+}
+
+class ResumeShiftEvent extends ShiftEvent {
+  final String uid;
+
+  ResumeShiftEvent(this.uid);
+}

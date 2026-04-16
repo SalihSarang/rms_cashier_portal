@@ -10,6 +10,12 @@ class ShiftActive extends ShiftState {
   ShiftActive(this.startTime);
 }
 
+class ShiftPaused extends ShiftState {
+  final DateTime startTime;
+
+  ShiftPaused(this.startTime);
+}
+
 class ShiftEnded extends ShiftState {
   final DateTime endTime;
 

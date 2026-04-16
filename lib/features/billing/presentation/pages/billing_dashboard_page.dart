@@ -6,9 +6,11 @@ import 'package:cashier_portal/features/billing/presentation/bloc/billing_bloc.d
 import 'package:cashier_portal/features/billing/presentation/bloc/billing_event.dart';
 import 'package:cashier_portal/features/billing/presentation/bloc/billing_state.dart';
 import 'package:cashier_portal/features/billing/presentation/widgets/billing_app_bar_area/billing_app_bar.dart';
-import 'package:cashier_portal/features/billing/presentation/widgets/billing_dashboard_view.dart';
+import 'package:cashier_portal/features/billing/presentation/widgets/billing_details_view.dart';
+import 'package:cashier_portal/features/billing/presentation/widgets/billing_queue_sidebar/billing_queue_sidebar.dart';
 import 'package:cashier_portal/features/billing/presentation/widgets/screen_states/billing_error_view.dart';
 import 'package:cashier_portal/features/billing/presentation/widgets/screen_states/billing_loading_view.dart';
+import 'package:cashier_portal/features/billing/presentation/widgets/screen_states/empty_billing_queue.dart';
 
 /// The main entry point for the Billing Dashboard feature.
 ///
@@ -16,6 +18,7 @@ import 'package:cashier_portal/features/billing/presentation/widgets/screen_stat
 /// 1. Bloc provision via GetIt injector.
 /// 2. Top-level layout structural definition (Scaffold, AppBar).
 /// 3. Global screen state routing (Loading, Error, Success).
+/// 4. Dashboard Table of Contents (Sidebar, Divider, Content/Empty Placeholder).
 class BillingDashboardPage extends StatelessWidget {
   const BillingDashboardPage({super.key});
 
@@ -41,8 +44,26 @@ class BillingDashboardPage extends StatelessWidget {
               return BillingErrorView(message: state.message);
             }
 
-            // 3. Render Main Layout when data is loaded (Stream provides updates)
-            return const BillingDashboardView();
+            // 3. Render Main Layout (formerly BillingDashboardView)
+            final bool hasSelectedOrder =
+                state is BillingLoaded && state.selectedOrder != null;
+
+            return Row(
+              children: [
+                // 1. Interactive Queue Management Sidebar
+                const BillingQueueSidebar(),
+
+                // 2. Vertical Boundary
+                const VerticalDivider(width: 1, color: NeutralColors.divider),
+
+                // 3. Contextual Order Details or Empty Queue Placeholder
+                Expanded(
+                  child: hasSelectedOrder
+                      ? const BillingDetailsView()
+                      : const EmptyBillingQueue(),
+                ),
+              ],
+            );
           },
         ),
       ),
