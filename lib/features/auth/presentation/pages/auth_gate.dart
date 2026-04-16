@@ -1,9 +1,10 @@
+import 'package:cashier_portal/features/billing/presentation/pages/billing_dashboard_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../bloc/auth_bloc.dart';
 import '../bloc/auth_event.dart';
 import '../bloc/auth_state.dart';
-import 'package:cashier_portal/features/home/presentation/pages/home_screen.dart';
+
 import 'login_page.dart';
 
 class AuthGate extends StatefulWidget {
@@ -26,7 +27,7 @@ class _AuthGateState extends State<AuthGate> {
     return BlocBuilder<AuthBloc, AuthState>(
       builder: (context, state) {
         if (state is Authenticated) {
-          return HomeScreen(staff: state.user);
+          return const BillingDashboardPage();
         }
 
         // Show full loading spinner ONLY during initial init state checking
