@@ -14,19 +14,17 @@ class BillingDetailsView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Expanded(
-      child: Column(
-        children: [
-          // Section 1: Order Metadata & Print/Action Header
-          BillingOrderHeader(),
+    return const Column(
+      children: [
+        // Order Metadata & Print/Action Header
+        BillingOrderHeader(),
 
-          // Section 2: Line Items Table (Fills remaining space)
-          BillingOrderItemsList(),
+        // Line Items Table (Fills remaining space)
+        BillingOrderItemsList(),
 
-          // Section 3: Totals & Payment Method Orchestrator
-          PaymentSummaryPanel(),
-        ],
-      ),
+        // Totals & Payment Method Orchestrator
+        PaymentSummaryPanel(),
+      ],
     );
   }
 }

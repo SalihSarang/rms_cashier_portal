@@ -4,10 +4,7 @@ import 'package:rms_design_system/rms_design_system.dart';
 class ProfileStatsRow extends StatelessWidget {
   final String shiftStart;
 
-  const ProfileStatsRow({
-    super.key,
-    required this.shiftStart,
-  });
+  const ProfileStatsRow({super.key, required this.shiftStart});
 
   @override
   Widget build(BuildContext context) {
@@ -53,7 +50,7 @@ class _StatCard extends StatelessWidget {
           Container(
             padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
-              color: const Color(0xFF1A1F2B), // Same slate blue background
+              color: const Color(0xFF1A1F2B),
               borderRadius: BorderRadius.circular(12),
             ),
             child: Icon(icon, color: const Color(0xFF4A8BF5), size: 24),

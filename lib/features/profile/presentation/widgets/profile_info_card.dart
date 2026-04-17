@@ -40,11 +40,15 @@ class ProfileInfoCard extends StatelessWidget {
                   ), // Deep slate blue matching screenshot
                   borderRadius: BorderRadius.circular(20),
                 ),
-                alignment: Alignment.center,
                 child: staff.avatar.isNotEmpty
                     ? ClipRRect(
                         borderRadius: BorderRadius.circular(20),
-                        child: Image.network(staff.avatar, fit: BoxFit.cover),
+                        child: Image.network(
+                          staff.avatar,
+                          width: 100,
+                          height: 100,
+                          fit: BoxFit.cover,
+                        ),
                       )
                     : Text(
                         initials,
