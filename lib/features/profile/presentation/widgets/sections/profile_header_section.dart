@@ -14,7 +14,11 @@ class ProfileHeaderSection extends StatelessWidget {
         if (state is! Authenticated) {
           return const SizedBox.shrink();
         }
-        return ProfileInfoCard(staff: state.user);
+
+        return ProfileInfoCard(
+          staff: state.user,
+          shiftSubtitle: 'Cashier Profile',
+        );
       },
     );
   }

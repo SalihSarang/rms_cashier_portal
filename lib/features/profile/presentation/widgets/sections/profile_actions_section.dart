@@ -20,25 +20,20 @@ class ProfileActionsSection extends StatelessWidget {
 
         return BlocBuilder<ShiftBloc, ShiftState>(
           builder: (context, shiftState) {
-            final bool isShiftActive = shiftState is ShiftActive;
-            final bool isShiftPaused = shiftState is ShiftPaused;
-            final bool isShiftInactive =
-                shiftState is ShiftInitial || shiftState is ShiftEnded;
+            final shiftData = shiftState.data;
 
             return Column(
               children: [
-                // Show START SHIFT only if NOT currently in a session
-                if (isShiftInactive)
+                if (shiftData?.canStart ?? false)
                   ProfileActionButton(
                     label: 'START SHIFT',
                     icon: Icons.play_circle_fill_rounded,
-                    color: const Color(0xFF4CAF50), // Success Green
+                    color: PrimaryColors.brandGreen, // Success Green
                     onPressed: () =>
-                        ProfileUtils.handleStartShift(context, staffId),
+                        ProfileUtils.handleStartShift(context, authState.user),
                   ),
 
-                //  Toggle Pause/Resume button if shift is in progress
-                if (isShiftActive)
+                if (shiftData?.canPause ?? false)
                   ProfileActionButton(
                     label: 'PAUSE SHIFT',
                     icon: Icons.pause_circle_outline_rounded,
@@ -46,17 +41,16 @@ class ProfileActionsSection extends StatelessWidget {
                     onPressed: () =>
                         ProfileUtils.handlePauseShift(context, staffId),
                   ),
-                if (isShiftPaused)
+                if (shiftData?.canResume ?? false)
                   ProfileActionButton(
                     label: 'RESUME SHIFT',
                     icon: Icons.play_circle_outline_rounded,
-                    color: const Color(0xFF4CAF50),
+                    color: PrimaryColors.brandGreen,
                     onPressed: () =>
                         ProfileUtils.handleResumeShift(context, staffId),
                   ),
 
-                // Show END SHIFT if shift is active or paused
-                if (isShiftActive || isShiftPaused) ...[
+                if (shiftData?.canEnd ?? false) ...[
                   const SizedBox(height: 16),
                   ProfileActionButton(
                     label: 'END SHIFT',
@@ -69,7 +63,6 @@ class ProfileActionsSection extends StatelessWidget {
 
                 const SizedBox(height: 32),
 
-                // Logout Action (Always available)
                 ProfileActionButton(
                   label: 'LOGOUT',
                   icon: Icons.logout_rounded,

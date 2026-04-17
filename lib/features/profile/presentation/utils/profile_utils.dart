@@ -4,16 +4,17 @@ import 'package:cashier_portal/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:cashier_portal/features/auth/presentation/bloc/auth_event.dart';
 import 'package:cashier_portal/features/profile/presentation/bloc/shift_bloc.dart';
 import 'package:cashier_portal/features/profile/presentation/bloc/shift_event.dart';
+import 'package:rms_shared_package/rms_shared_package.dart';
 
 class ProfileUtils {
   /// Formats a DateTime into a HH:mm string format.
-  static String formatShiftTime(DateTime time) {
-    return '${time.hour.toString().padLeft(2, '0')}:${time.minute.toString().padLeft(2, '0')}';
+  static String formatShiftTime(DateTime? time) {
+    return ShiftUtils.formatTime(time);
   }
 
   /// Handles starting the shift.
-  static void handleStartShift(BuildContext context, String staffId) {
-    context.read<ShiftBloc>().add(StartShiftEvent(staffId));
+  static void handleStartShift(BuildContext context, StaffModel staff) {
+    context.read<ShiftBloc>().add(StartShiftEvent(staff));
   }
 
   /// Handles the end shift logic.

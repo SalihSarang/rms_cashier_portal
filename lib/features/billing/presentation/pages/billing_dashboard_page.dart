@@ -4,21 +4,15 @@ import 'package:rms_design_system/rms_design_system.dart';
 import 'package:cashier_portal/core/di/injector.dart';
 import 'package:cashier_portal/features/billing/presentation/bloc/billing_bloc.dart';
 import 'package:cashier_portal/features/billing/presentation/bloc/billing_event.dart';
-import 'package:cashier_portal/features/billing/presentation/bloc/billing_state.dart';
+import 'package:cashier_portal/features/billing/presentation/widgets/billing_details_area.dart';
 import 'package:cashier_portal/features/billing/presentation/widgets/billing_app_bar_area/billing_app_bar.dart';
-import 'package:cashier_portal/features/billing/presentation/widgets/billing_details_view.dart';
 import 'package:cashier_portal/features/billing/presentation/widgets/billing_queue_sidebar/billing_queue_sidebar.dart';
-import 'package:cashier_portal/features/billing/presentation/widgets/screen_states/billing_error_view.dart';
-import 'package:cashier_portal/features/billing/presentation/widgets/screen_states/billing_loading_view.dart';
-import 'package:cashier_portal/features/billing/presentation/widgets/screen_states/empty_billing_queue.dart';
 
 /// The main entry point for the Billing Dashboard feature.
 ///
-/// This page acts as a high-level orchestrator that handles:
-/// 1. Bloc provision via GetIt injector.
-/// 2. Top-level layout structural definition (Scaffold, AppBar).
-/// 3. Global screen state routing (Loading, Error, Success).
-/// 4. Dashboard Table of Contents (Sidebar, Divider, Content/Empty Placeholder).
+/// This page serves as a declarative blueprint for the dashboard UI.
+/// High-level layout is defined here, while state management and component
+/// logic are delegated to specialized sub-widgets.
 class BillingDashboardPage extends StatelessWidget {
   const BillingDashboardPage({super.key});
 
@@ -26,45 +20,27 @@ class BillingDashboardPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => getIt<BillingBloc>()..add(LoadBillingQueue()),
-      child: Scaffold(
+      child: const Scaffold(
         backgroundColor: NeutralColors.darkBackground,
+        appBar: BillingAppBar(),
+        body: Column(
+          children: [
+            // Main Dashboard Layout
+            Expanded(
+              child: Row(
+                children: [
+                  // Sidebar Queue
+                  BillingQueueSidebar(),
 
-        // Custom App Bar with desk actions and profile
-        appBar: const BillingAppBar(),
+                  // Structural Boundary
+                  VerticalDivider(width: 1, color: NeutralColors.divider),
 
-        body: BlocBuilder<BillingBloc, BillingState>(
-          builder: (context, state) {
-            // 1. Handle Initial/Loading States
-            if (state is BillingLoading || state is BillingInitial) {
-              return const BillingLoadingView();
-            }
-
-            // 2. Handle Error State
-            if (state is BillingError) {
-              return BillingErrorView(message: state.message);
-            }
-
-            // 3. Render Main Layout (formerly BillingDashboardView)
-            final bool hasSelectedOrder =
-                state is BillingLoaded && state.selectedOrder != null;
-
-            return Row(
-              children: [
-                // 1. Interactive Queue Management Sidebar
-                const BillingQueueSidebar(),
-
-                // 2. Vertical Boundary
-                const VerticalDivider(width: 1, color: NeutralColors.divider),
-
-                // 3. Contextual Order Details or Empty Queue Placeholder
-                Expanded(
-                  child: hasSelectedOrder
-                      ? const BillingDetailsView()
-                      : const EmptyBillingQueue(),
-                ),
-              ],
-            );
-          },
+                  // Contextual Content Area
+                  Expanded(child: BillingDetailsArea()),
+                ],
+              ),
+            ),
+          ],
         ),
       ),
     );

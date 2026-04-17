@@ -1,46 +1,56 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:cashier_portal/features/profile/domain/usecases/update_last_active_usecase.dart';
-import 'package:cashier_portal/features/profile/domain/usecases/pause_shift_usecase.dart';
-import 'package:cashier_portal/features/profile/domain/usecases/resume_shift_usecase.dart';
+import 'package:rms_shared_package/models/shift_models/shift_session.dart';
+import 'package:rms_shared_package/usecases/end_shift.dart';
+import 'package:rms_shared_package/usecases/get_current_shift_session.dart';
+import 'package:rms_shared_package/usecases/get_shift_history.dart';
+import 'package:rms_shared_package/usecases/pause_shift.dart';
+import 'package:rms_shared_package/usecases/resume_shift.dart';
+import 'package:rms_shared_package/usecases/start_shift.dart';
+
 import 'shift_event.dart';
 import 'shift_state.dart';
 
 class ShiftBloc extends Bloc<ShiftEvent, ShiftState> {
-  final UpdateLastActiveUseCase updateLastActiveUseCase;
-  final PauseShiftUseCase pauseShiftUseCase;
-  final ResumeShiftUseCase resumeShiftUseCase;
+  final GetCurrentShiftSession getCurrentShiftSession;
+  final GetShiftHistory getShiftHistory;
+  final StartShift startShift;
+  final PauseShift pauseShift;
+  final ResumeShift resumeShift;
+  final EndShift endShift;
 
   ShiftBloc({
-    required this.updateLastActiveUseCase,
-    required this.pauseShiftUseCase,
-    required this.resumeShiftUseCase,
+    required this.getCurrentShiftSession,
+    required this.getShiftHistory,
+    required this.startShift,
+    required this.pauseShift,
+    required this.resumeShift,
+    required this.endShift,
   }) : super(ShiftInitial()) {
-    on<StartShiftEvent>(
-      (event, emit) => _handleShiftUpdate(event.uid, true, emit),
-    );
-    on<EndShiftEvent>(
-      (event, emit) => _handleShiftUpdate(event.uid, false, emit),
-    );
+    on<LoadShiftEvent>(_onLoadShift);
+    on<StartShiftEvent>(_onStartShift);
     on<PauseShiftEvent>(_onPauseShift);
     on<ResumeShiftEvent>(_onResumeShift);
+    on<EndShiftEvent>(_onEndShift);
+    on<ClearShiftEvent>((event, emit) => emit(ShiftInitial()));
   }
 
-  Future<void> _handleShiftUpdate(
-    String uid,
-    bool isStarting,
+  Future<void> _onLoadShift(
+    LoadShiftEvent event,
     Emitter<ShiftState> emit,
   ) async {
-    emit(ShiftLoading());
+    await _refresh(event.staff.id, emit);
+  }
+
+  Future<void> _onStartShift(
+    StartShiftEvent event,
+    Emitter<ShiftState> emit,
+  ) async {
+    emit(ShiftLoading(previous: state.data));
     try {
-      final now = DateTime.now();
-      await updateLastActiveUseCase(uid, now);
-      if (isStarting) {
-        emit(ShiftActive(now));
-      } else {
-        emit(ShiftEnded(now));
-      }
+      await startShift(event.staff);
+      await _refresh(event.staff.id, emit);
     } catch (e) {
-      emit(ShiftError(e.toString()));
+      emit(ShiftError(_message(e), previous: state.data));
     }
   }
 
@@ -48,15 +58,12 @@ class ShiftBloc extends Bloc<ShiftEvent, ShiftState> {
     PauseShiftEvent event,
     Emitter<ShiftState> emit,
   ) async {
-    final currentState = state;
-    if (currentState is ShiftActive) {
-      emit(ShiftLoading());
-      try {
-        await pauseShiftUseCase(event.uid);
-        emit(ShiftPaused(currentState.startTime));
-      } catch (e) {
-        emit(ShiftError(e.toString()));
-      }
+    emit(ShiftLoading(previous: state.data));
+    try {
+      await pauseShift(event.uid);
+      await _refresh(event.uid, emit);
+    } catch (e) {
+      emit(ShiftError(_message(e), previous: state.data));
     }
   }
 
@@ -64,15 +71,45 @@ class ShiftBloc extends Bloc<ShiftEvent, ShiftState> {
     ResumeShiftEvent event,
     Emitter<ShiftState> emit,
   ) async {
-    final currentState = state;
-    if (currentState is ShiftPaused) {
-      emit(ShiftLoading());
-      try {
-        await resumeShiftUseCase(event.uid);
-        emit(ShiftActive(currentState.startTime));
-      } catch (e) {
-        emit(ShiftError(e.toString()));
-      }
+    emit(ShiftLoading(previous: state.data));
+    try {
+      await resumeShift(event.uid);
+      await _refresh(event.uid, emit);
+    } catch (e) {
+      emit(ShiftError(_message(e), previous: state.data));
     }
+  }
+
+  Future<void> _onEndShift(
+    EndShiftEvent event,
+    Emitter<ShiftState> emit,
+  ) async {
+    emit(ShiftLoading(previous: state.data));
+    try {
+      await endShift(event.uid);
+      await _refresh(event.uid, emit);
+    } catch (e) {
+      emit(ShiftError(_message(e), previous: state.data));
+    }
+  }
+
+  Future<void> _refresh(String staffId, Emitter<ShiftState> emit) async {
+    final results = await Future.wait<dynamic>([
+      getCurrentShiftSession(staffId),
+      getShiftHistory(staffId, limit: 10),
+    ]);
+    emit(
+      ShiftReady(
+        currentSession: results[0] as ShiftSession?,
+        history: results[1] as List<ShiftSession>,
+      ),
+    );
+  }
+
+  String _message(Object error) {
+    final message = error.toString();
+    return message.startsWith('Exception: ')
+        ? message.replaceFirst('Exception: ', '')
+        : message;
   }
 }

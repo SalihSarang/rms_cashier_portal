@@ -1,8 +1,7 @@
 import 'dart:ui';
+import 'package:rms_design_system/rms_design_system.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:rms_design_system/app_colors/neutral_colors.dart';
-import 'package:rms_design_system/app_colors/primary_colors.dart';
 import '../bloc/auth_bloc.dart';
 import '../bloc/auth_event.dart';
 import '../bloc/auth_state.dart';
@@ -71,7 +70,7 @@ class _LoginFormState extends State<LoginForm> {
                 'Welcome Back',
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                  color: NeutralColors.white,
+                  color: TextColors.primary,
                   fontSize: 24,
                   fontWeight: FontWeight.bold,
                 ),
@@ -130,7 +129,7 @@ class _LoginFormState extends State<LoginForm> {
                             width: 20,
                             height: 20,
                             child: CircularProgressIndicator(
-                              color: NeutralColors.white,
+                              color: TextColors.primary,
                               strokeWidth: 2,
                             ),
                           )

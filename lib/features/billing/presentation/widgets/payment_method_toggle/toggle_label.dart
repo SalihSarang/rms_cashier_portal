@@ -12,7 +12,7 @@ class ToggleLabel extends StatelessWidget {
     return Text(
       label,
       style: TextStyle(
-        color: isSelected ? Colors.black : TextColors.muted,
+        color: isSelected ? NeutralColors.shadow : TextColors.muted,
         fontWeight: isSelected ? FontWeight.bold : FontWeight.w500,
         fontSize: 15,
       ),

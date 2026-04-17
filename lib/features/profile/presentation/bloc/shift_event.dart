@@ -1,9 +1,17 @@
+import 'package:rms_shared_package/models/staff_model/staff_model.dart';
+
 abstract class ShiftEvent {}
 
-class StartShiftEvent extends ShiftEvent {
-  final String uid;
+class LoadShiftEvent extends ShiftEvent {
+  final StaffModel staff;
 
-  StartShiftEvent(this.uid);
+  LoadShiftEvent(this.staff);
+}
+
+class StartShiftEvent extends ShiftEvent {
+  final StaffModel staff;
+
+  StartShiftEvent(this.staff);
 }
 
 class EndShiftEvent extends ShiftEvent {
@@ -23,3 +31,5 @@ class ResumeShiftEvent extends ShiftEvent {
 
   ResumeShiftEvent(this.uid);
 }
+
+class ClearShiftEvent extends ShiftEvent {}

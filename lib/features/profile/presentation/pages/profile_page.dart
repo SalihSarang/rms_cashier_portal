@@ -1,47 +1,40 @@
 import 'package:flutter/material.dart';
 import 'package:rms_design_system/rms_design_system.dart';
-import 'package:cashier_portal/features/billing/presentation/widgets/billing_app_bar_area/billing_app_bar.dart';
+import 'package:cashier_portal/features/profile/presentation/widgets/profile_app_bar.dart';
+import 'package:cashier_portal/features/profile/presentation/widgets/profile_action_button.dart';
+import 'package:cashier_portal/features/profile/presentation/utils/profile_utils.dart';
 import '../widgets/sections/profile_header_section.dart';
-import '../widgets/sections/profile_stats_section.dart';
-import '../widgets/sections/profile_actions_section.dart';
 
-/// The Profile Page serves as a clear Table of Contents for the staff and shift management UI.
+/// The Profile Page displays staff information and session controls.
 ///
-/// It delegates business logic and state observation to modular section widgets:
-/// [ProfileHeaderSection] - User information and avatar
-/// [ProfileStatsSection] - Shift timing and device tracking
-/// [ProfileActionsSection] - Shift management and session logout controls
+/// It has been simplified to remove shift management features which are not supported.
 class ProfilePage extends StatelessWidget {
   const ProfilePage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
+    return Scaffold(
       backgroundColor: NeutralColors.darkBackground,
-      appBar: BillingAppBar(showActions: false),
+      appBar: const ProfileAppBar(),
       body: SingleChildScrollView(
-        padding: EdgeInsets.symmetric(vertical: 40),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
+        padding: const EdgeInsets.symmetric(vertical: 40, horizontal: 16),
+        child: Center(
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 500),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                // Staff Identity
-                ProfileHeaderSection(),
-
-                SizedBox(height: 16),
-
-                // Active Session Statistics
-                ProfileStatsSection(),
-
-                SizedBox(height: 48),
-
-                // Shift Management Actions
-                ProfileActionsSection(),
+                const ProfileHeaderSection(),
+                const SizedBox(height: 32),
+                ProfileActionButton(
+                  label: 'LOGOUT',
+                  icon: Icons.logout_rounded,
+                  color: SemanticColors.error,
+                  onPressed: () => ProfileUtils.handleLogout(context),
+                ),
               ],
             ),
-          ],
+          ),
         ),
       ),
     );

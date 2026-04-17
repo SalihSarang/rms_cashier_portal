@@ -26,7 +26,7 @@ class BillingQueueItemHeader extends StatelessWidget {
             Text(
               tableName,
               style: const TextStyle(
-                color: Colors.white,
+                color: TextColors.primary,
                 fontWeight: FontWeight.bold,
                 fontSize: 13,
               ),

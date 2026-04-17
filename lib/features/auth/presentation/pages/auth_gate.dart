@@ -1,6 +1,8 @@
 import 'package:cashier_portal/features/billing/presentation/pages/billing_dashboard_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../../profile/presentation/bloc/shift_bloc.dart';
+import '../../../profile/presentation/bloc/shift_event.dart';
 import '../bloc/auth_bloc.dart';
 import '../bloc/auth_event.dart';
 import '../bloc/auth_state.dart';
@@ -24,22 +26,30 @@ class _AuthGateState extends State<AuthGate> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<AuthBloc, AuthState>(
-      builder: (context, state) {
+    return BlocListener<AuthBloc, AuthState>(
+      listener: (context, state) {
         if (state is Authenticated) {
-          return const BillingDashboardPage();
+          context.read<ShiftBloc>().add(LoadShiftEvent(state.user));
+        } else {
+          context.read<ShiftBloc>().add(ClearShiftEvent());
         }
-
-        // Show full loading spinner ONLY during initial init state checking
-        if (state is AuthInitial ||
-            (state is AuthLoading && state.isInitialCheck)) {
-          return const Scaffold(
-            body: Center(child: CircularProgressIndicator()),
-          );
-        }
-
-        return const LoginPage();
       },
+      child: BlocBuilder<AuthBloc, AuthState>(
+        builder: (context, state) {
+          if (state is Authenticated) {
+            return const BillingDashboardPage();
+          }
+
+          if (state is AuthInitial ||
+              (state is AuthLoading && state.isInitialCheck)) {
+            return const Scaffold(
+              body: Center(child: CircularProgressIndicator()),
+            );
+          }
+
+          return const LoginPage();
+        },
+      ),
     );
   }
 }

@@ -15,7 +15,7 @@ class ProcessPaymentButton extends StatelessWidget {
       },
       style: ElevatedButton.styleFrom(
         backgroundColor: PrimaryColors.brandGreen,
-        foregroundColor: Colors.black,
+        foregroundColor: NeutralColors.shadow,
         padding: const EdgeInsets.symmetric(vertical: 20),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
       ),

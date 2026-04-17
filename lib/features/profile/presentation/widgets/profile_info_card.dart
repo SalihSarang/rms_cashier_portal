@@ -4,8 +4,13 @@ import 'package:rms_shared_package/rms_shared_package.dart';
 
 class ProfileInfoCard extends StatelessWidget {
   final StaffModel staff;
+  final String shiftSubtitle;
 
-  const ProfileInfoCard({super.key, required this.staff});
+  const ProfileInfoCard({
+    super.key,
+    required this.staff,
+    required this.shiftSubtitle,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +23,6 @@ class ProfileInfoCard extends StatelessWidget {
         .toUpperCase();
 
     return Container(
-      width: 500, // Matching the large width in the screenshot
       padding: const EdgeInsets.symmetric(vertical: 48, horizontal: 24),
       decoration: BoxDecoration(
         color: NeutralColors.darkSurface,
@@ -35,9 +39,8 @@ class ProfileInfoCard extends StatelessWidget {
                 width: 100,
                 height: 100,
                 decoration: BoxDecoration(
-                  color: const Color(
-                    0xFF1A1F2B,
-                  ), // Deep slate blue matching screenshot
+                  color: NeutralColors
+                      .background, // Using design system background color
                   borderRadius: BorderRadius.circular(20),
                 ),
                 child: staff.avatar.isNotEmpty
@@ -53,7 +56,8 @@ class ProfileInfoCard extends StatelessWidget {
                     : Text(
                         initials,
                         style: const TextStyle(
-                          color: Color(0xFF4A8BF5), // Vibrant blue initials
+                          color: PrimaryColors
+                              .defaultColor, // Using design system primary color
                           fontSize: 32,
                           fontWeight: FontWeight.bold,
                         ),
@@ -82,6 +86,15 @@ class ProfileInfoCard extends StatelessWidget {
               color: TextColors.primary,
               fontSize: 28,
               fontWeight: FontWeight.bold,
+            ),
+          ),
+          const SizedBox(height: 8),
+          Text(
+            '${staff.role.name.toUpperCase()} • $shiftSubtitle',
+            style: const TextStyle(
+              color: TextColors.muted,
+              fontSize: 12,
+              fontWeight: FontWeight.w600,
             ),
           ),
         ],

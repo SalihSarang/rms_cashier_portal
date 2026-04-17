@@ -43,7 +43,7 @@ class ItemRow extends StatelessWidget {
                 Text(
                   item.name,
                   style: const TextStyle(
-                    color: Colors.white,
+                    color: TextColors.primary,
                     fontWeight: FontWeight.bold,
                     fontSize: 15,
                   ),
@@ -63,7 +63,7 @@ class ItemRow extends StatelessWidget {
             child: Text(
               item.quantity.toString(),
               style: const TextStyle(
-                color: Colors.white,
+                color: TextColors.primary,
                 fontWeight: FontWeight.bold,
                 fontSize: 15,
               ),
@@ -78,7 +78,7 @@ class ItemRow extends StatelessWidget {
               child: Text(
                 '\$ ${item.price.toStringAsFixed(2)}',
                 style: const TextStyle(
-                  color: Colors.white,
+                  color: TextColors.primary,
                   fontWeight: FontWeight.bold,
                   fontSize: 15,
                 ),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:rms_design_system/rms_design_system.dart';
 
 class ItemsListDivider extends StatelessWidget {
   const ItemsListDivider({super.key});
@@ -8,7 +9,7 @@ class ItemsListDivider extends StatelessWidget {
     return Container(
       height: 1,
       margin: const EdgeInsets.symmetric(horizontal: 24),
-      color: Colors.white.withValues(alpha: 0.05),
+      color: TextColors.primary.withValues(alpha: 0.05),
     );
   }
 }

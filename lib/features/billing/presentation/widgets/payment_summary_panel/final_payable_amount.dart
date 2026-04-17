@@ -28,7 +28,7 @@ class FinalPayableAmount extends StatelessWidget {
             Text(
               '\$${amount.toStringAsFixed(2)}',
               style: const TextStyle(
-                color: Colors.white,
+                color: TextColors.primary,
                 fontSize: 32,
                 fontWeight: FontWeight.bold,
               ),

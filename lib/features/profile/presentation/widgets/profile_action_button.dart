@@ -20,10 +20,9 @@ class ProfileActionButton extends StatelessWidget {
       onTap: onPressed,
       borderRadius: BorderRadius.circular(12),
       child: Container(
-        width: 500, // Matching the main card width
         padding: const EdgeInsets.symmetric(vertical: 20),
         decoration: BoxDecoration(
-          border: Border.all(color: color.withOpacity(0.5), width: 1.5),
+          border: Border.all(color: color.withValues(alpha: 0.5), width: 1.5),
           borderRadius: BorderRadius.circular(12),
         ),
         child: Row(
@@ -34,7 +33,7 @@ class ProfileActionButton extends StatelessWidget {
             Text(
               label,
               style: TextStyle(
-                color: color.withOpacity(0.9),
+                color: color.withValues(alpha: 0.9),
                 fontSize: 14,
                 fontWeight: FontWeight.bold,
                 letterSpacing: 0.8,

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:rms_design_system/rms_design_system.dart';
 
 class RowValue extends StatelessWidget {
   final String text;
@@ -13,7 +14,7 @@ class RowValue extends StatelessWidget {
       style:
           style ??
           const TextStyle(
-            color: Colors.white,
+            color: TextColors.primary,
             fontWeight: FontWeight.w500,
             fontSize: 13,
           ),

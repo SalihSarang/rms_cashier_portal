@@ -11,11 +11,11 @@ class OrderActionButtons extends StatelessWidget {
         // Print Bill Button
         ElevatedButton.icon(
           onPressed: () {},
-          icon: const Icon(Icons.print, size: 16, color: Colors.white),
+          icon: const Icon(Icons.print, size: 16, color: TextColors.primary),
           label: const Text('Print Bill'),
           style: ElevatedButton.styleFrom(
             backgroundColor: NeutralColors.darkSurface,
-            foregroundColor: Colors.white,
+            foregroundColor: TextColors.primary,
             elevation: 0,
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
             shape: RoundedRectangleBorder(

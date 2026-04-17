@@ -15,7 +15,7 @@ class SidebarSearchField extends StatelessWidget {
           borderRadius: BorderRadius.circular(6),
         ),
         child: const TextField(
-          style: TextStyle(color: Colors.white, fontSize: 14),
+          style: TextStyle(color: TextColors.primary, fontSize: 14),
           decoration: InputDecoration(
             hintText: 'Search Table or Order #',
             hintStyle: TextStyle(color: TextColors.muted, fontSize: 13),

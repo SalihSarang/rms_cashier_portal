@@ -1,29 +1,65 @@
+import 'package:rms_shared_package/enums/enums.dart';
+import 'package:rms_shared_package/models/shift_models/shift_session.dart';
+import 'package:rms_shared_package/utils/shift_utils.dart';
+
 abstract class ShiftState {}
 
 class ShiftInitial extends ShiftState {}
 
-class ShiftLoading extends ShiftState {}
+class ShiftLoading extends ShiftState {
+  final ShiftReady? previous;
 
-class ShiftActive extends ShiftState {
-  final DateTime startTime;
-
-  ShiftActive(this.startTime);
+  ShiftLoading({this.previous});
 }
 
-class ShiftPaused extends ShiftState {
-  final DateTime startTime;
+class ShiftReady extends ShiftState {
+  final ShiftSession? currentSession;
+  final List<ShiftSession> history;
 
-  ShiftPaused(this.startTime);
-}
+  ShiftReady({required this.currentSession, required this.history});
 
-class ShiftEnded extends ShiftState {
-  final DateTime endTime;
+  ShiftStatus get status =>
+      ShiftUtils.derivedStatus(session: currentSession, schedule: null);
 
-  ShiftEnded(this.endTime);
+  bool get canStart => currentSession == null;
+  bool get canPause => currentSession?.status == ShiftStatus.active;
+  bool get canResume => currentSession?.status == ShiftStatus.paused;
+  bool get canEnd =>
+      currentSession?.status == ShiftStatus.active ||
+      currentSession?.status == ShiftStatus.paused;
+
+  int get workedMinutes => currentSession == null
+      ? 0
+      : currentSession!.actualEnd != null
+      ? currentSession!.workedMinutes
+      : ShiftUtils.calculateLiveWorkedMinutes(currentSession);
+
+  int get pauseMinutes =>
+      currentSession?.pauseEntries.fold<int>(
+        0,
+        (sum, entry) => sum + entry.durationMinutes,
+      ) ??
+      0;
+
+  String get shiftStartLabel =>
+      ShiftUtils.formatTime(currentSession?.actualStart);
+  String get workedLabel => ShiftUtils.formatMinutes(workedMinutes);
+  String get pauseLabel => ShiftUtils.formatMinutes(pauseMinutes);
+  String get statusLabel => ShiftUtils.formatStatus(status);
 }
 
 class ShiftError extends ShiftState {
   final String message;
+  final ShiftReady? previous;
 
-  ShiftError(this.message);
+  ShiftError(this.message, {this.previous});
+}
+
+extension ShiftStateX on ShiftState {
+  ShiftReady? get data {
+    if (this is ShiftReady) return this as ShiftReady;
+    if (this is ShiftLoading) return (this as ShiftLoading).previous;
+    if (this is ShiftError) return (this as ShiftError).previous;
+    return null;
+  }
 }

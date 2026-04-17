@@ -16,7 +16,7 @@ class AppBarLogo extends StatelessWidget {
             borderRadius: BorderRadius.circular(8),
           ),
           child: const Center(
-            child: Icon(Icons.receipt_long, color: Colors.black, size: 20),
+            child: Icon(Icons.receipt_long, color: NeutralColors.shadow, size: 20),
           ),
         ),
         const SizedBox(width: 16),

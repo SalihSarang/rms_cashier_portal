@@ -17,7 +17,7 @@ class OrderInfoSection extends StatelessWidget {
             Text(
               'Order #${order.id}',
               style: const TextStyle(
-                color: Colors.white,
+                color: TextColors.primary,
                 fontSize: 22,
                 fontWeight: FontWeight.bold,
               ),
