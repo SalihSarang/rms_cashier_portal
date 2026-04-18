@@ -19,7 +19,6 @@ class BillingOrderItemsList extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<BillingBloc, BillingState>(
       builder: (context, state) {
-        // Validation check for loaded state
         if (state is! BillingLoaded || state.selectedOrder == null) {
           return const SizedBox.shrink();
         }

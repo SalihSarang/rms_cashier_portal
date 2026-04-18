@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:rms_design_system/rms_design_system.dart';
 import 'package:rms_shared_package/models/order_model/ordered_menu_model.dart';
+import 'item_index_label.dart';
+import 'item_details_column.dart';
+import 'item_quantity_label.dart';
+import 'item_price_label.dart';
 
 /// A single row representing a cart item in the order details table.
 ///
@@ -21,70 +24,13 @@ class ItemRow extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Item Sequence Number
-          SizedBox(
-            width: 40,
-            child: Text(
-              index.toString(),
-              style: const TextStyle(
-                color: PrimaryColors.brandGreen,
-                fontWeight: FontWeight.bold,
-                fontSize: 14,
-              ),
-            ),
-          ),
+          ItemIndexLabel(index: index),
 
-          // Item Details: Name and Modifiers
-          Expanded(
-            flex: 4,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  item.name,
-                  style: const TextStyle(
-                    color: TextColors.primary,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 15,
-                  ),
-                ),
-                const SizedBox(height: 6),
-                Text(
-                  modifierText,
-                  style: const TextStyle(color: TextColors.muted, fontSize: 12),
-                ),
-              ],
-            ),
-          ),
+          ItemDetailsColumn(name: item.name, modifiers: modifierText),
 
-          // Quantity Column
-          Expanded(
-            flex: 1,
-            child: Text(
-              item.quantity.toString(),
-              style: const TextStyle(
-                color: TextColors.primary,
-                fontWeight: FontWeight.bold,
-                fontSize: 15,
-              ),
-            ),
-          ),
+          ItemQuantityLabel(quantity: item.quantity),
 
-          // Price Column (Right-aligned)
-          Expanded(
-            flex: 2,
-            child: Align(
-              alignment: Alignment.centerRight,
-              child: Text(
-                '\$ ${item.price.toStringAsFixed(2)}',
-                style: const TextStyle(
-                  color: TextColors.primary,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 15,
-                ),
-              ),
-            ),
-          ),
+          ItemPriceLabel(price: item.price),
         ],
       ),
     );

@@ -21,17 +21,17 @@ class BillingDetailsArea extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<BillingBloc, BillingState>(
       builder: (context, state) {
-        // 1. Handle Initial/Loading States
+        // Handle Initial/Loading States
         if (state is BillingLoading || state is BillingInitial) {
           return const BillingLoadingView();
         }
 
-        // 2. Handle Error State
+        // Handle Error State
         if (state is BillingError) {
           return BillingErrorView(message: state.message);
         }
 
-        // 3. Render Content or Empty Placeholder
+        //Render Content or Empty Placeholder
         final bool hasSelectedOrder =
             state is BillingLoaded && state.selectedOrder != null;
 

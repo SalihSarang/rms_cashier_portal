@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:rms_design_system/rms_design_system.dart';
+import 'items_list_header_label.dart';
 
 class ItemsListHeader extends StatelessWidget {
   const ItemsListHeader({super.key});
@@ -7,55 +7,16 @@ class ItemsListHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const Padding(
-      padding: EdgeInsets.fromLTRB(24, 20, 24, 16),
+      padding: EdgeInsets.symmetric(horizontal: 24, vertical: 12),
       child: Row(
         children: [
-          SizedBox(
-            width: 40,
-            child: Text(
-              'No',
-              style: TextStyle(
-                color: TextColors.secondary,
-                fontSize: 11,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-          ),
-          Expanded(
-            flex: 4,
-            child: Text(
-              'Item Details',
-              style: TextStyle(
-                color: TextColors.secondary,
-                fontSize: 11,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-          ),
-          Expanded(
-            flex: 1,
-            child: Text(
-              'QTY',
-              style: TextStyle(
-                color: TextColors.secondary,
-                fontSize: 11,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-          ),
-          Expanded(
+          ItemsListHeaderLabel('No', width: 40),
+          ItemsListHeaderLabel('Item Details', flex: 4),
+          ItemsListHeaderLabel('QTY', flex: 1),
+          ItemsListHeaderLabel(
+            'Price',
             flex: 2,
-            child: Align(
-              alignment: Alignment.centerRight,
-              child: Text(
-                'Price',
-                style: TextStyle(
-                  color: TextColors.secondary,
-                  fontSize: 11,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-            ),
+            alignment: Alignment.centerRight,
           ),
         ],
       ),

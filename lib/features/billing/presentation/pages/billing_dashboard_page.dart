@@ -8,11 +8,11 @@ import 'package:cashier_portal/features/billing/presentation/widgets/billing_det
 import 'package:cashier_portal/features/billing/presentation/widgets/billing_app_bar_area/billing_app_bar.dart';
 import 'package:cashier_portal/features/billing/presentation/widgets/billing_queue_sidebar/billing_queue_sidebar.dart';
 
-/// The main entry point for the Billing Dashboard feature.
+/// Billing Dashboard Page — declarative two-column web layout.
 ///
-/// This page serves as a declarative blueprint for the dashboard UI.
-/// High-level layout is defined here, while state management and component
-/// logic are delegated to specialized sub-widgets.
+///  AppBar  : BillingAppBar        (logo · profile avatar)
+///  Left    : BillingQueueSidebar  (order queue list + search)
+///  Right   : BillingDetailsArea   (selected order details)
 class BillingDashboardPage extends StatelessWidget {
   const BillingDashboardPage({super.key});
 
@@ -23,23 +23,11 @@ class BillingDashboardPage extends StatelessWidget {
       child: const Scaffold(
         backgroundColor: NeutralColors.darkBackground,
         appBar: BillingAppBar(),
-        body: Column(
+        body: Row(
           children: [
-            // Main Dashboard Layout
-            Expanded(
-              child: Row(
-                children: [
-                  // Sidebar Queue
-                  BillingQueueSidebar(),
-
-                  // Structural Boundary
-                  VerticalDivider(width: 1, color: NeutralColors.divider),
-
-                  // Contextual Content Area
-                  Expanded(child: BillingDetailsArea()),
-                ],
-              ),
-            ),
+            BillingQueueSidebar(),
+            VerticalDivider(width: 1, color: NeutralColors.divider),
+            Expanded(child: BillingDetailsArea()),
           ],
         ),
       ),

@@ -3,19 +3,27 @@ import 'package:rms_design_system/rms_design_system.dart';
 
 class BillingQueueItemIcon extends StatelessWidget {
   final IconData icon;
+  final double rightPadding;
 
-  const BillingQueueItemIcon({super.key, required this.icon});
+  const BillingQueueItemIcon({
+    super.key,
+    required this.icon,
+    this.rightPadding = 0,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: 44,
-      height: 44,
-      decoration: BoxDecoration(
-        color: NeutralColors.surfaceLighter,
-        borderRadius: BorderRadius.circular(6),
+    return Padding(
+      padding: EdgeInsets.only(right: rightPadding),
+      child: Container(
+        width: 44,
+        height: 44,
+        decoration: BoxDecoration(
+          color: NeutralColors.surfaceLighter,
+          borderRadius: BorderRadius.circular(6),
+        ),
+        child: Icon(icon, color: TextColors.secondary, size: 20),
       ),
-      child: Icon(icon, color: TextColors.secondary, size: 20),
     );
   }
 }

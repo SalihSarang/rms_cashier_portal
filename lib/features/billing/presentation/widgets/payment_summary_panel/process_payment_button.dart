@@ -3,6 +3,7 @@ import 'package:cashier_portal/features/billing/presentation/bloc/billing_event.
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rms_design_system/rms_design_system.dart';
+import 'process_payment_label.dart';
 
 class ProcessPaymentButton extends StatelessWidget {
   const ProcessPaymentButton({super.key});
@@ -19,17 +20,7 @@ class ProcessPaymentButton extends StatelessWidget {
         padding: const EdgeInsets.symmetric(vertical: 20),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
       ),
-      child: const Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(Icons.check_circle_outline, size: 20),
-          SizedBox(width: 8),
-          Text(
-            'PROCESS PAYMENT & CLOSE',
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
-          ),
-        ],
-      ),
+      child: const ProcessPaymentLabel(),
     );
   }
 }

@@ -1,8 +1,7 @@
-import 'package:cashier_portal/features/billing/presentation/widgets/payment_method_toggle/toggle_icon.dart';
-import 'package:cashier_portal/features/billing/presentation/widgets/payment_method_toggle/toggle_label.dart';
 import 'package:flutter/material.dart';
 import 'package:rms_design_system/rms_design_system.dart';
 import 'package:rms_shared_package/rms_shared_package.dart';
+import 'payment_method_toggle_content.dart';
 
 class PaymentMethodToggle extends StatelessWidget {
   final PaymentMethod method;
@@ -31,15 +30,11 @@ class PaymentMethodToggle extends StatelessWidget {
             color: isSelected ? PrimaryColors.brandGreen : Colors.transparent,
             borderRadius: BorderRadius.circular(10),
           ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              if (isSelected) ...[
-                ToggleIcon(method: method, defaultIcon: iconData),
-                const SizedBox(width: 10),
-              ],
-              ToggleLabel(label: label, isSelected: isSelected),
-            ],
+          child: PaymentMethodToggleContent(
+            method: method,
+            label: label,
+            iconData: iconData,
+            isSelected: isSelected,
           ),
         ),
       ),

@@ -17,7 +17,7 @@ class EmptyBillingQueue extends StatelessWidget {
           ),
           const SizedBox(height: 24),
           Text(
-            'Queue is Empty',
+            'No orders waiting for billing',
             style: TextStyle(
               color: TextColors.secondary,
               fontSize: 24,

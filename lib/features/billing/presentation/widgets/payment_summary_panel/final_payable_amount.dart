@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:rms_design_system/rms_design_system.dart';
+import 'amount_label.dart';
 
 class FinalPayableAmount extends StatelessWidget {
   final double amount;
@@ -12,19 +13,12 @@ class FinalPayableAmount extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       crossAxisAlignment: CrossAxisAlignment.end,
       children: [
-        Container(),
+        const Spacer(),
         Column(
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
-            const Text(
-              'Final Payable Amount',
-              style: TextStyle(
-                color: PrimaryColors.brandGreen,
-                fontSize: 11,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            const SizedBox(height: 8),
+            const AmountLabel('Final Payable Amount'),
+
             Text(
               '\$${amount.toStringAsFixed(2)}',
               style: const TextStyle(

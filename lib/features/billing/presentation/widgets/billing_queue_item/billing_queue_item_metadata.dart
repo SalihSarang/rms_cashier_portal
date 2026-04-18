@@ -1,5 +1,6 @@
+import 'package:cashier_portal/features/profile/presentation/widgets/primary_text.dart';
 import 'package:flutter/material.dart';
-import 'package:rms_design_system/rms_design_system.dart';
+import 'billing_queue_time_label.dart';
 
 class BillingQueueItemMetadata extends StatelessWidget {
   final String timeAgo;
@@ -16,23 +17,11 @@ class BillingQueueItemMetadata extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Row(
-          children: [
-            const Icon(Icons.access_time, color: TextColors.muted, size: 12),
-            const SizedBox(width: 4),
-            Text(
-              timeAgo,
-              style: const TextStyle(color: TextColors.muted, fontSize: 11),
-            ),
-          ],
-        ),
-        Text(
+        BillingQueueTimeLabel(label: timeAgo),
+        PrimaryText(
           '\$${totalAmount.toStringAsFixed(2)}',
-          style: const TextStyle(
-            color: TextColors.primary,
-            fontWeight: FontWeight.bold,
-            fontSize: 15,
-          ),
+          fontSize: 15,
+          fontWeight: FontWeight.bold,
         ),
       ],
     );
