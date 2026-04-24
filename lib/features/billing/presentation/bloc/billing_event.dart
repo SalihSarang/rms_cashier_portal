@@ -29,3 +29,21 @@ class SelectPaymentMethodEvent extends BillingEvent {
 }
 
 class ProcessPaymentEvent extends BillingEvent {}
+
+class SearchQueryChanged extends BillingEvent {
+  final String query;
+
+  const SearchQueryChanged(this.query);
+
+  @override
+  List<Object> get props => [query];
+}
+
+class UpdateAmountTendered extends BillingEvent {
+  final double amount;
+
+  const UpdateAmountTendered(this.amount);
+
+  @override
+  List<Object> get props => [amount];
+}

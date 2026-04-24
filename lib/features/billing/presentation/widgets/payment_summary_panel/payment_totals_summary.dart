@@ -7,6 +7,7 @@ class PaymentTotalsSummary extends StatelessWidget {
   final double tax;
   final double serviceCharge;
   final double finalAmount;
+  final double? amountTendered;
 
   const PaymentTotalsSummary({
     super.key,
@@ -14,6 +15,7 @@ class PaymentTotalsSummary extends StatelessWidget {
     required this.tax,
     required this.serviceCharge,
     required this.finalAmount,
+    this.amountTendered,
   });
 
   @override
@@ -37,6 +39,13 @@ class PaymentTotalsSummary extends StatelessWidget {
         ),
         const SizedBox(height: 40),
         FinalPayableAmount(amount: finalAmount),
+        if (amountTendered != null) ...[
+          const SizedBox(height: 16),
+          BillingSummaryRow(
+            label: 'Change Due',
+            value: '\$${(amountTendered! - finalAmount).toStringAsFixed(2)}',
+          ),
+        ],
       ],
     );
   }

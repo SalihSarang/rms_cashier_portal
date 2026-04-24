@@ -5,8 +5,13 @@ import 'payment_totals_summary.dart';
 
 class PaymentTotalsCard extends StatelessWidget {
   final OrderModel order;
+  final double? amountTendered;
 
-  const PaymentTotalsCard({super.key, required this.order});
+  const PaymentTotalsCard({
+    super.key,
+    required this.order,
+    this.amountTendered,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -26,6 +31,7 @@ class PaymentTotalsCard extends StatelessWidget {
         tax: tax,
         serviceCharge: serviceCharge,
         finalAmount: finalAmount,
+        amountTendered: amountTendered,
       ),
     );
   }

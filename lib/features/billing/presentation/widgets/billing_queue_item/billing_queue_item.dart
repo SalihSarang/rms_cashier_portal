@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:rms_design_system/rms_design_system.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rms_shared_package/rms_shared_package.dart';
 

@@ -40,7 +40,7 @@ class BillingQueueSidebar extends StatelessWidget {
               // Scrollable Order List
               Expanded(
                 child: SidebarOrderList(
-                  orders: state.orders,
+                  orders: state.filteredOrders,
                   selectedOrderId: state.selectedOrderId,
                 ),
               ),

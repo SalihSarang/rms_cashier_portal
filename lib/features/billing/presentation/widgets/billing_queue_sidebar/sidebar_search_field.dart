@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rms_design_system/rms_design_system.dart';
+import '../../bloc/billing_bloc.dart';
+import '../../bloc/billing_event.dart';
 
 class SidebarSearchField extends StatelessWidget {
   const SidebarSearchField({super.key});
@@ -14,9 +17,12 @@ class SidebarSearchField extends StatelessWidget {
           color: NeutralColors.darkSurface,
           borderRadius: BorderRadius.circular(6),
         ),
-        child: const TextField(
-          style: TextStyle(color: TextColors.primary, fontSize: 14),
-          decoration: InputDecoration(
+        child: TextField(
+          onChanged: (query) {
+            context.read<BillingBloc>().add(SearchQueryChanged(query));
+          },
+          style: const TextStyle(color: TextColors.primary, fontSize: 14),
+          decoration: const InputDecoration(
             hintText: 'Search Table or Order #',
             hintStyle: TextStyle(color: TextColors.muted, fontSize: 13),
             border: InputBorder.none,

@@ -24,15 +24,7 @@ class AppBarLogo extends StatelessWidget {
           ),
         ),
         const SizedBox(width: 16),
-        const Text(
-          'Billing Dashboard',
-          style: TextStyle(
-            color: TextColors.primary,
-            fontSize: 18,
-            fontWeight: FontWeight.w700,
-            letterSpacing: 0.2,
-          ),
-        ),
+        const RmsAppBarTitle('Billing Dashboard'),
       ],
     );
   }

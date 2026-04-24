@@ -18,6 +18,8 @@ class BillingBloc extends Bloc<BillingEvent, BillingState> {
     on<LoadBillingQueue>(_onLoadBillingQueue);
     on<SelectOrderEvent>(_onSelectOrder);
     on<SelectPaymentMethodEvent>(_onSelectPaymentMethod);
+    on<SearchQueryChanged>(_onSearchQueryChanged);
+    on<UpdateAmountTendered>(_onUpdateAmountTendered);
     on<ProcessPaymentEvent>(_onProcessPayment);
   }
 
@@ -68,7 +70,35 @@ class BillingBloc extends Bloc<BillingEvent, BillingState> {
   ) {
     if (state is BillingLoaded) {
       final currentState = state as BillingLoaded;
-      emit(currentState.copyWith(selectedPaymentMethod: event.method));
+      // Reset amount tendered when switching payment methods
+      emit(
+        currentState.copyWith(
+          selectedPaymentMethod: event.method,
+          amountTendered: null,
+        ),
+      );
+    }
+  }
+
+  /// Updates the search query to filter the order queue.
+  void _onSearchQueryChanged(
+    SearchQueryChanged event,
+    Emitter<BillingState> emit,
+  ) {
+    if (state is BillingLoaded) {
+      final currentState = state as BillingLoaded;
+      emit(currentState.copyWith(searchQuery: event.query));
+    }
+  }
+
+  /// Updates the amount tendered for cash payments.
+  void _onUpdateAmountTendered(
+    UpdateAmountTendered event,
+    Emitter<BillingState> emit,
+  ) {
+    if (state is BillingLoaded) {
+      final currentState = state as BillingLoaded;
+      emit(currentState.copyWith(amountTendered: event.amount));
     }
   }
 

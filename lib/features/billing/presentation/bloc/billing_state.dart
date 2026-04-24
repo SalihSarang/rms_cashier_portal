@@ -16,11 +16,15 @@ class BillingLoaded extends BillingState {
   final List<OrderModel> orders;
   final String? selectedOrderId;
   final PaymentMethod selectedPaymentMethod;
+  final String searchQuery;
+  final double? amountTendered;
 
   const BillingLoaded({
     required this.orders,
     this.selectedOrderId,
     required this.selectedPaymentMethod,
+    this.searchQuery = '',
+    this.amountTendered,
   });
 
   OrderModel? get selectedOrder {
@@ -31,21 +35,42 @@ class BillingLoaded extends BillingState {
     }
   }
 
+  List<OrderModel> get filteredOrders {
+    if (searchQuery.trim().isEmpty) return orders;
+
+    final query = searchQuery.trim().toLowerCase();
+    return orders.where((order) {
+      final orderIdMatch = order.id.toLowerCase().contains(query);
+      final tableIdMatch = order.tableId.toLowerCase().contains(query);
+      return orderIdMatch || tableIdMatch;
+    }).toList();
+  }
+
   BillingLoaded copyWith({
     List<OrderModel>? orders,
     String? selectedOrderId,
     PaymentMethod? selectedPaymentMethod,
+    String? searchQuery,
+    double? amountTendered,
   }) {
     return BillingLoaded(
       orders: orders ?? this.orders,
       selectedOrderId: selectedOrderId ?? this.selectedOrderId,
       selectedPaymentMethod:
           selectedPaymentMethod ?? this.selectedPaymentMethod,
+      searchQuery: searchQuery ?? this.searchQuery,
+      amountTendered: amountTendered ?? this.amountTendered,
     );
   }
 
   @override
-  List<Object?> get props => [orders, selectedOrderId, selectedPaymentMethod];
+  List<Object?> get props => [
+    orders,
+    selectedOrderId,
+    selectedPaymentMethod,
+    searchQuery,
+    amountTendered,
+  ];
 }
 
 class BillingError extends BillingState {

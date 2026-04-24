@@ -15,7 +15,10 @@ class BillingRemoteDataSourceImpl implements BillingRemoteDataSource {
   Stream<List<OrderModel>> getOrders() {
     return _firestore
         .collection(OrderDbConstants.orders)
-        .where('paymentStatus', isEqualTo: PaymentStatus.pending.name)
+        .where(
+          'orderStatus',
+          whereIn: [OrderStatus.served.name, OrderStatus.ready.name],
+        )
         // Note: Removed .orderBy() here to avoid the requirement for a Composite Index in Firestore.
         // We sort the results in-memory instead for better initial developer experience.
         .snapshots()
@@ -33,11 +36,26 @@ class BillingRemoteDataSourceImpl implements BillingRemoteDataSource {
 
   @override
   Future<void> processPayment(String orderId, PaymentMethod method) async {
-    await _firestore.collection(OrderDbConstants.orders).doc(orderId).update({
+    final batch = _firestore.batch();
+
+    // 1. Update the master order document
+    final orderRef = _firestore
+        .collection(OrderDbConstants.orders)
+        .doc(orderId);
+    batch.update(orderRef, {
       'paymentStatus': PaymentStatus.paid.name,
       'orderStatus': OrderStatus.completed.name,
       'paymentMethod': method.name,
       'updatedAt': DateTime.now().toIso8601String(),
     });
+
+    // 2. Cleanup: Delete the corresponding document from the kitchen queue
+    final kitchenQueueRef = _firestore
+        .collection(KitchenDbConstants.kitchenQueue)
+        .doc(orderId);
+    batch.delete(kitchenQueueRef);
+
+    // Execute the transaction
+    await batch.commit();
   }
 }

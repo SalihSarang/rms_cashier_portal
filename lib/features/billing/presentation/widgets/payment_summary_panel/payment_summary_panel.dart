@@ -1,3 +1,5 @@
+import 'package:cashier_portal/features/billing/presentation/widgets/payment_summary_panel/tendered_amount_input.dart';
+import 'package:rms_shared_package/enums/enums.dart';
 import 'package:cashier_portal/features/billing/presentation/widgets/payment_summary_panel/payment_method_selector.dart';
 import 'package:cashier_portal/features/billing/presentation/widgets/payment_summary_panel/payment_totals_card.dart';
 import 'package:cashier_portal/features/billing/presentation/widgets/payment_summary_panel/process_payment_button.dart';
@@ -45,8 +47,16 @@ class PaymentSummaryPanel extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
+                    if (state.selectedPaymentMethod == PaymentMethod.cash) ...[
+                      const TenderedAmountInput(),
+                      const SizedBox(height: 16),
+                    ],
+
                     // Detailed Totals calculation card
-                    PaymentTotalsCard(order: state.selectedOrder!),
+                    PaymentTotalsCard(
+                      order: state.selectedOrder!,
+                      amountTendered: state.amountTendered,
+                    ),
 
                     const SizedBox(height: 16),
 
