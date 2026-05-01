@@ -4,6 +4,8 @@ import 'package:cashier_portal/features/billing/data/datasources/billing_remote_
 import 'package:cashier_portal/features/billing/data/repositories/billing_repository_impl.dart';
 import 'package:cashier_portal/features/billing/domain/repositories/billing_repository.dart';
 import 'package:cashier_portal/features/billing/presentation/bloc/billing_bloc.dart';
+import 'package:cashier_portal/features/billing/domain/repositories/receipt_printing_repository.dart';
+import 'package:cashier_portal/features/billing/data/repositories/receipt_printing_repository_impl.dart';
 
 /// Dependency Injection setup for the Billing Feature.
 void billingDI() {
@@ -17,8 +19,15 @@ void billingDI() {
     () => BillingRepositoryImpl(getIt<BillingRemoteDataSource>()),
   );
 
+  getIt.registerLazySingleton<ReceiptPrintingRepository>(
+    () => ReceiptPrintingRepositoryImpl(),
+  );
+
   // Blocs
   getIt.registerFactory<BillingBloc>(
-    () => BillingBloc(repository: getIt<BillingRepository>()),
+    () => BillingBloc(
+      repository: getIt<BillingRepository>(),
+      printingRepository: getIt<ReceiptPrintingRepository>(),
+    ),
   );
 }

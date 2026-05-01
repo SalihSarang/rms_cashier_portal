@@ -12,7 +12,19 @@ class ProcessPaymentButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return ElevatedButton(
       onPressed: () {
-        context.read<BillingBloc>().add(ProcessPaymentEvent());
+        final billingBloc = context.read<BillingBloc>();
+        RmsAlertDialog.show(
+          context,
+          title: 'Confirm Payment',
+          message: 'Are you sure you want to complete this payment and close the order?',
+          type: RmsAlertDialogType.confirm,
+          confirmText: 'Confirm',
+          accentColor: PrimaryColors.brandGreen,
+          backgroundColor: NeutralColors.darkSurface,
+          onConfirm: () {
+            billingBloc.add(ProcessPaymentEvent());
+          },
+        );
       },
       style: ElevatedButton.styleFrom(
         backgroundColor: PrimaryColors.brandGreen,

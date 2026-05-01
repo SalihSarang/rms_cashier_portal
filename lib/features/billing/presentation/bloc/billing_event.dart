@@ -47,3 +47,12 @@ class UpdateAmountTendered extends BillingEvent {
   @override
   List<Object> get props => [amount];
 }
+
+class PrintOrderEvent extends BillingEvent {
+  final OrderModel order;
+
+  const PrintOrderEvent(this.order);
+
+  @override
+  List<Object> get props => [order];
+}

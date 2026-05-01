@@ -17,10 +17,8 @@ class BillingRemoteDataSourceImpl implements BillingRemoteDataSource {
         .collection(OrderDbConstants.orders)
         .where(
           'orderStatus',
-          whereIn: [OrderStatus.served.name, OrderStatus.ready.name],
+          isEqualTo: 'billRequested',
         )
-        // Note: Removed .orderBy() here to avoid the requirement for a Composite Index in Firestore.
-        // We sort the results in-memory instead for better initial developer experience.
         .snapshots()
         .map((snapshot) {
           final orders = snapshot.docs.map((doc) {
