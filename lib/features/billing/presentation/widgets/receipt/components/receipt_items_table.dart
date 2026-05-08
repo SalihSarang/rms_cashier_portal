@@ -51,11 +51,7 @@ class ReceiptItemsTable extends pw.StatelessWidget {
               ],
             ),
             pw.TableRow(
-              children: [
-                pw.SizedBox(height: 5),
-                pw.SizedBox(),
-                pw.SizedBox(),
-              ],
+              children: [pw.SizedBox(height: 5), pw.SizedBox(), pw.SizedBox()],
             ),
             // Items
             ...items.map((item) {

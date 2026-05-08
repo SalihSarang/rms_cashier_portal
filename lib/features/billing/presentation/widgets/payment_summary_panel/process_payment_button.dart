@@ -16,7 +16,8 @@ class ProcessPaymentButton extends StatelessWidget {
         RmsAlertDialog.show(
           context,
           title: 'Confirm Payment',
-          message: 'Are you sure you want to complete this payment and close the order?',
+          message:
+              'Are you sure you want to complete this payment and close the order?',
           type: RmsAlertDialogType.confirm,
           confirmText: 'Confirm',
           accentColor: PrimaryColors.brandGreen,

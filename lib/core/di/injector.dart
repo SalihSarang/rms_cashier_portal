@@ -12,7 +12,6 @@ void setupDI() {
     () => FirebaseFirestore.instance,
   );
 
-
   //Cashier Auth DI
   cashierAuthDI();
 

@@ -16,10 +16,8 @@ class BillingBloc extends Bloc<BillingEvent, BillingState> {
   final ReceiptPrintingRepository printingRepository;
   StreamSubscription? _queueSubscription;
 
-  BillingBloc({
-    required this.repository,
-    required this.printingRepository,
-  }) : super(BillingInitial()) {
+  BillingBloc({required this.repository, required this.printingRepository})
+    : super(BillingInitial()) {
     on<LoadBillingQueue>(_onLoadBillingQueue);
     on<SelectOrderEvent>(_onSelectOrder);
     on<SelectPaymentMethodEvent>(_onSelectPaymentMethod);
@@ -122,10 +120,10 @@ class BillingBloc extends Bloc<BillingEvent, BillingState> {
       try {
         // Trigger printing before or as part of proceeding the bill
         // In many POS systems, the receipt is printed as the payment is confirmed.
-        await printingRepository.printReceipt(currentOrder);
+        await printingRepository.printReceipt(currentOrder, direct: true);
 
         await repository.processPayment(
-          orderId: currentOrder.id,
+          order: currentOrder,
           method: currentState.selectedPaymentMethod,
         );
       } catch (e) {
@@ -142,7 +140,7 @@ class BillingBloc extends Bloc<BillingEvent, BillingState> {
     try {
       await printingRepository.printReceipt(event.order);
     } catch (e) {
-      // We don't want to block the UI for a manual print failure, 
+      // We don't want to block the UI for a manual print failure,
       // but we could emit a transient error state if needed.
     }
   }

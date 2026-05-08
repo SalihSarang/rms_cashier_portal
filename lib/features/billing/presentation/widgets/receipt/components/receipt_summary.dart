@@ -19,17 +19,11 @@ class ReceiptSummary extends pw.StatelessWidget {
           children: [
             pw.Text(
               'SUBTOTAL',
-              style: pw.TextStyle(
-                fontWeight: pw.FontWeight.bold,
-                fontSize: 10,
-              ),
+              style: pw.TextStyle(fontWeight: pw.FontWeight.bold, fontSize: 10),
             ),
             pw.Text(
               totalAmount.toStringAsFixed(2),
-              style: pw.TextStyle(
-                fontWeight: pw.FontWeight.bold,
-                fontSize: 10,
-              ),
+              style: pw.TextStyle(fontWeight: pw.FontWeight.bold, fontSize: 10),
             ),
           ],
         ),
@@ -41,17 +35,11 @@ class ReceiptSummary extends pw.StatelessWidget {
           children: [
             pw.Text(
               'TOTAL PAYABLE',
-              style: pw.TextStyle(
-                fontWeight: pw.FontWeight.bold,
-                fontSize: 12,
-              ),
+              style: pw.TextStyle(fontWeight: pw.FontWeight.bold, fontSize: 12),
             ),
             pw.Text(
               totalAmount.toStringAsFixed(2),
-              style: pw.TextStyle(
-                fontWeight: pw.FontWeight.bold,
-                fontSize: 12,
-              ),
+              style: pw.TextStyle(fontWeight: pw.FontWeight.bold, fontSize: 12),
             ),
           ],
         ),

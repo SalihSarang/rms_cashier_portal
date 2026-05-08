@@ -6,6 +6,9 @@ import 'package:cashier_portal/features/profile/presentation/bloc/shift_bloc.dar
 import 'package:cashier_portal/features/profile/presentation/bloc/shift_event.dart';
 import 'package:rms_design_system/rms_design_system.dart';
 import 'package:rms_shared_package/rms_shared_package.dart';
+import 'package:cashier_portal/core/di/injector.dart';
+import 'package:cashier_portal/features/auth/presentation/bloc/auth_state.dart';
+import 'package:cashier_portal/features/profile/presentation/bloc/shift_state.dart';
 
 class ProfileUtils {
   /// Formats a DateTime into a HH:mm string format.
@@ -33,10 +36,36 @@ class ProfileUtils {
     context.read<ShiftBloc>().add(ResumeShiftEvent(staffId));
   }
 
-  /// Handles the global logout flow.
+  /// Handles the global logout flow with confirmation.
   static void handleLogout(BuildContext context) {
-    context.read<AuthBloc>().add(SignOutEvent());
-    Navigator.of(context).popUntil((route) => route.isFirst);
+    RmsAlertDialog.show(
+      context,
+      title: 'Logout Confirmation',
+      message: 'Are you sure you want to log out from the Cashier Profile?',
+      type: RmsAlertDialogType.confirm,
+      confirmText: 'Logout',
+      onConfirm: () async {
+        final shiftBloc = context.read<ShiftBloc>();
+        final authBloc = context.read<AuthBloc>();
+        final shiftData = shiftBloc.state.data;
+
+        if (shiftData != null && shiftData.canEnd) {
+          final authState = authBloc.state;
+          if (authState is Authenticated) {
+            final staffId = authState.user.id;
+            // End the shift and wait for it to complete
+            await getIt<EndShift>().call(staffId);
+            // Notify the bloc to update its state locally
+            shiftBloc.add(EndShiftEvent(staffId));
+          }
+        }
+
+        authBloc.add(SignOutEvent());
+        if (context.mounted) {
+          Navigator.of(context).popUntil((route) => route.isFirst);
+        }
+      },
+    );
   }
 
   /// Capitalises the first letter of a string.

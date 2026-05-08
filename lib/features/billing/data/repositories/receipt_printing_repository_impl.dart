@@ -7,7 +7,7 @@ import '../../presentation/widgets/receipt/receipt_pdf_template.dart';
 /// Implementation of [ReceiptPrintingRepository] using the `printing` package.
 class ReceiptPrintingRepositoryImpl implements ReceiptPrintingRepository {
   @override
-  Future<void> printReceipt(OrderModel order) async {
+  Future<void> printReceipt(OrderModel order, {bool direct = false}) async {
     final dateStr = DateFormat('dd MMM yyyy, hh:mm a').format(order.createdAt);
 
     // Log receipt details for verification
@@ -15,10 +15,45 @@ class ReceiptPrintingRepositoryImpl implements ReceiptPrintingRepository {
 
     // Generate PDF using the presentation template
     final pdf = ReceiptPdfTemplate.build(order);
+    final pdfBytes = await pdf.save();
 
-    // Print the document
+    if (direct) {
+      try {
+        // Try to find a suitable printer for direct printing
+        final printers = await Printing.listPrinters();
+
+        // Strategy: Look for printers with "POS", "Thermal", "Receipt", or "80mm" in their name
+        final thermalPrinter = printers.firstWhere(
+          (p) {
+            final name = p.name.toLowerCase();
+            return name.contains('pos') ||
+                name.contains('thermal') ||
+                name.contains('receipt') ||
+                name.contains('80mm');
+          },
+          orElse: () => printers.isNotEmpty
+              ? printers.first
+              : printers.first, // Fallback to first available if none match
+        );
+
+        if (printers.isNotEmpty) {
+          // ignore: avoid_print
+          print('Attempting direct print to: ${thermalPrinter.name}');
+          await Printing.directPrintPdf(
+            printer: thermalPrinter,
+            onLayout: (format) async => pdfBytes,
+          );
+          return; // Success
+        }
+      } catch (e) {
+        // ignore: avoid_print
+        print('Direct printing failed, falling back to layoutPdf: $e');
+      }
+    }
+
+    // Default or Fallback: Show the system print dialog
     await Printing.layoutPdf(
-      onLayout: (format) async => pdf.save(),
+      onLayout: (format) async => pdfBytes,
       name: 'receipt_${order.id}.pdf',
     );
   }

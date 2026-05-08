@@ -9,17 +9,11 @@ class ReceiptFooter extends pw.StatelessWidget {
         pw.SizedBox(height: 20),
         pw.Text(
           'Thank you for dining with us!',
-          style: pw.TextStyle(
-            fontStyle: pw.FontStyle.italic,
-            fontSize: 9,
-          ),
+          style: pw.TextStyle(fontStyle: pw.FontStyle.italic, fontSize: 9),
         ),
         pw.Text(
           'Visit us again soon!',
-          style: pw.TextStyle(
-            fontStyle: pw.FontStyle.italic,
-            fontSize: 9,
-          ),
+          style: pw.TextStyle(fontStyle: pw.FontStyle.italic, fontSize: 9),
         ),
         pw.SizedBox(height: 10),
       ],

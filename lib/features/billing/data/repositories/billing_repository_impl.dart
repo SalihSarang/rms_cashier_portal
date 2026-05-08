@@ -14,9 +14,9 @@ class BillingRepositoryImpl implements BillingRepository {
 
   @override
   Future<void> processPayment({
-    required String orderId,
+    required OrderModel order,
     required PaymentMethod method,
   }) async {
-    return await _remoteDataSource.processPayment(orderId, method);
+    return await _remoteDataSource.processPayment(order, method);
   }
 }

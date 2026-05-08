@@ -16,10 +16,7 @@ class ReceiptOrderInfo extends pw.StatelessWidget {
       children: [
         pw.Text(
           '--- RECEIPT ---',
-          style: pw.TextStyle(
-            fontWeight: pw.FontWeight.bold,
-            fontSize: 10,
-          ),
+          style: pw.TextStyle(fontWeight: pw.FontWeight.bold, fontSize: 10),
         ),
         pw.SizedBox(height: 8),
         pw.Container(
@@ -50,10 +47,7 @@ class ReceiptOrderInfo extends pw.StatelessWidget {
                 'Staff: ${order.staffName}',
                 style: const pw.TextStyle(fontSize: 8),
               ),
-              pw.Text(
-                'Date: $dateStr',
-                style: const pw.TextStyle(fontSize: 8),
-              ),
+              pw.Text('Date: $dateStr', style: const pw.TextStyle(fontSize: 8)),
             ],
           ),
         ),
