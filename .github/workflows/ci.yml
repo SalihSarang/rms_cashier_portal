@@ -24,6 +24,7 @@ jobs:
         with:
           repository: SalihSarang/rms_packages
           path: packages
+          token: ${{ secrets.GH_PAT }}
 
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
