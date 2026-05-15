@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:rms_design_system/app_colors/neutral_colors.dart';
+import 'package:rms_design_system/rms_design_system.dart';
 
 class CustomTextField extends StatefulWidget {
   final String label;
@@ -60,7 +60,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
           child: TextField(
             controller: widget.controller,
             obscureText: _obscureText,
-            style: const TextStyle(color: NeutralColors.white, fontSize: 14),
+            style: const TextStyle(color: TextColors.primary, fontSize: 14),
             decoration: InputDecoration(
               hintText: widget.hint,
               hintStyle: const TextStyle(

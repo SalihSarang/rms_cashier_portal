@@ -3,9 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:cashier_portal/firebase_options.dart';
 import 'package:cashier_portal/core/di/injector.dart';
-import 'features/auth/presentation/bloc/auth_bloc.dart';
-import 'features/home/presentation/bloc/shift_bloc.dart';
-import 'features/auth/presentation/pages/auth_gate.dart';
+import 'package:cashier_portal/features/auth/presentation/bloc/auth_bloc.dart';
+import 'package:cashier_portal/features/profile/presentation/bloc/shift_bloc.dart';
+import 'package:cashier_portal/features/auth/presentation/pages/auth_gate.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
