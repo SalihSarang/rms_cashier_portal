@@ -16,6 +16,17 @@ class BillingBloc extends Bloc<BillingEvent, BillingState> {
   final ReceiptPrintingRepository printingRepository;
   StreamSubscription? _queueSubscription;
 
+  static const mockRestaurant = RestaurantModel(
+    name: 'RMS Premium Dine',
+    address: '123 Culinary Street, Foodie City',
+    phone: '+1 234 567 890',
+    email: 'contact@rmsdine.com',
+    fssaiNumber: '12345678901234',
+    gstin: '27AAAAA0000A1Z5',
+    cgstRate: 2.5,
+    sgstRate: 2.5,
+  );
+
   BillingBloc({required this.repository, required this.printingRepository})
     : super(BillingInitial()) {
     on<LoadBillingQueue>(_onLoadBillingQueue);
@@ -42,12 +53,32 @@ class BillingBloc extends Bloc<BillingEvent, BillingState> {
       onData: (orders) {
         if (state is BillingLoaded) {
           final currentState = state as BillingLoaded;
-          return currentState.copyWith(orders: orders);
+          final updatedOrders = orders;
+          BillModel? updatedBill = currentState.selectedBill;
+
+          // Update bill if the selected order is in the new list
+          if (currentState.selectedOrderId != null) {
+            try {
+              final selectedOrder = updatedOrders.firstWhere(
+                (o) => o.id == currentState.selectedOrderId,
+              );
+              updatedBill = _getBillForOrder(selectedOrder);
+            } catch (_) {
+              updatedBill = null;
+            }
+          }
+
+          return currentState.copyWith(
+            orders: updatedOrders,
+            selectedBill: updatedBill,
+          );
         }
 
+        final firstOrder = orders.isNotEmpty ? orders.first : null;
         return BillingLoaded(
           orders: orders,
-          selectedOrderId: orders.isNotEmpty ? orders.first.id : null,
+          selectedOrderId: firstOrder?.id,
+          selectedBill: firstOrder != null ? _getBillForOrder(firstOrder) : null,
           selectedPaymentMethod: PaymentMethod.card,
         );
       },
@@ -63,8 +94,28 @@ class BillingBloc extends Bloc<BillingEvent, BillingState> {
   void _onSelectOrder(SelectOrderEvent event, Emitter<BillingState> emit) {
     if (state is BillingLoaded) {
       final currentState = state as BillingLoaded;
-      emit(currentState.copyWith(selectedOrderId: event.orderId));
+      try {
+        final selectedOrder = currentState.orders.firstWhere(
+          (o) => o.id == event.orderId,
+        );
+        emit(
+          currentState.copyWith(
+            selectedOrderId: event.orderId,
+            selectedBill: _getBillForOrder(selectedOrder),
+          ),
+        );
+      } catch (_) {
+        emit(currentState.copyWith(selectedOrderId: event.orderId));
+      }
     }
+  }
+
+  BillModel _getBillForOrder(OrderModel order) {
+    return BillModel.fromOrder(
+      billId: 'BILL-${order.id.split('-').last.toUpperCase()}',
+      order: order,
+      restaurant: mockRestaurant,
+    );
   }
 
   /// Updates the desired payment method for the current order.

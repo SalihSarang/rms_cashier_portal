@@ -2,19 +2,15 @@ import 'package:cashier_portal/features/billing/presentation/widgets/billing_sum
 import 'package:cashier_portal/features/billing/presentation/widgets/payment_summary_panel/final_payable_amount.dart';
 import 'package:flutter/material.dart';
 
+import 'package:rms_shared_package/rms_shared_package.dart';
+
 class PaymentTotalsSummary extends StatelessWidget {
-  final double subtotal;
-  final double tax;
-  final double serviceCharge;
-  final double finalAmount;
+  final BillModel bill;
   final double? amountTendered;
 
   const PaymentTotalsSummary({
     super.key,
-    required this.subtotal,
-    required this.tax,
-    required this.serviceCharge,
-    required this.finalAmount,
+    required this.bill,
     this.amountTendered,
   });
 
@@ -25,25 +21,39 @@ class PaymentTotalsSummary extends StatelessWidget {
       children: [
         BillingSummaryRow(
           label: 'Subtotal',
-          value: '\$${subtotal.toStringAsFixed(2)}',
+          value: '₹${bill.subTotal.toStringAsFixed(2)}',
         ),
         const SizedBox(height: 16),
         BillingSummaryRow(
-          label: 'Tax (8%)',
-          value: '\$${tax.toStringAsFixed(2)}',
+          label: 'CGST (${bill.restaurantInfo.cgstRate}%)',
+          value: '₹${bill.cgst.toStringAsFixed(2)}',
         ),
         const SizedBox(height: 16),
         BillingSummaryRow(
-          label: 'Service Charge (0%)',
-          value: '\$${serviceCharge.toStringAsFixed(2)}',
+          label: 'SGST (${bill.restaurantInfo.sgstRate}%)',
+          value: '₹${bill.sgst.toStringAsFixed(2)}',
         ),
+        if (bill.serviceCharge > 0) ...[
+          const SizedBox(height: 16),
+          BillingSummaryRow(
+            label: 'Service Charge',
+            value: '₹${bill.serviceCharge.toStringAsFixed(2)}',
+          ),
+        ],
+        if (bill.discount > 0) ...[
+          const SizedBox(height: 16),
+          BillingSummaryRow(
+            label: 'Discount',
+            value: '- ₹${bill.discount.toStringAsFixed(2)}',
+          ),
+        ],
         const SizedBox(height: 40),
-        FinalPayableAmount(amount: finalAmount),
+        FinalPayableAmount(amount: bill.grandTotal),
         if (amountTendered != null) ...[
           const SizedBox(height: 16),
           BillingSummaryRow(
             label: 'Change Due',
-            value: '\$${(amountTendered! - finalAmount).toStringAsFixed(2)}',
+            value: '₹${(amountTendered! - bill.grandTotal).toStringAsFixed(2)}',
           ),
         ],
       ],

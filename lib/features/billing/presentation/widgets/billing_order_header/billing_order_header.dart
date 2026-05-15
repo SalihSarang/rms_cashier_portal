@@ -17,11 +17,14 @@ class BillingOrderHeader extends StatelessWidget {
     return BlocBuilder<BillingBloc, BillingState>(
       builder: (context, state) {
         // Only render if an order is selected
-        if (state is! BillingLoaded || state.selectedOrder == null) {
+        if (state is! BillingLoaded ||
+            state.selectedOrder == null ||
+            state.selectedBill == null) {
           return const SizedBox.shrink();
         }
 
         final order = state.selectedOrder!;
+        final bill = state.selectedBill!;
 
         return Padding(
           padding: const EdgeInsets.fromLTRB(24, 24, 24, 16),
@@ -30,7 +33,7 @@ class BillingOrderHeader extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               // Left: Specific Order Metadata
-              OrderInfoSection(order: order),
+              OrderInfoSection(order: order, billId: bill.billId),
 
               // Right: Contextual Utility Buttons
               const OrderActionButtons(),

@@ -7,8 +7,9 @@ import 'order_type_badge.dart';
 
 class OrderInfoSection extends StatelessWidget {
   final OrderModel order;
+  final String billId;
 
-  const OrderInfoSection({super.key, required this.order});
+  const OrderInfoSection({super.key, required this.order, required this.billId});
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +19,7 @@ class OrderInfoSection extends StatelessWidget {
         Row(
           children: [
             PrimaryText(
-              'Order #${order.id}',
+              'Bill #$billId',
               fontSize: 22,
               fontWeight: FontWeight.bold,
             ),
@@ -26,7 +27,7 @@ class OrderInfoSection extends StatelessWidget {
           ],
         ),
         MutedText(
-          'Table ${order.tableNumber} • Waiter: ${order.staffName} • Opened ${BillingUtils.formatTime(order.createdAt)}',
+          'Table ${order.tableNumber} • Waiter: ${order.staffName} • Opened ${BillingUtils.formatTime(order.createdAt)} • Order #${order.id}',
           fontSize: 13,
           topPadding: 8,
         ),

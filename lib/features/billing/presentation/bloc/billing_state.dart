@@ -15,6 +15,7 @@ class BillingLoading extends BillingState {}
 class BillingLoaded extends BillingState {
   final List<OrderModel> orders;
   final String? selectedOrderId;
+  final BillModel? selectedBill;
   final PaymentMethod selectedPaymentMethod;
   final String searchQuery;
   final double? amountTendered;
@@ -22,6 +23,7 @@ class BillingLoaded extends BillingState {
   const BillingLoaded({
     required this.orders,
     this.selectedOrderId,
+    this.selectedBill,
     required this.selectedPaymentMethod,
     this.searchQuery = '',
     this.amountTendered,
@@ -49,6 +51,7 @@ class BillingLoaded extends BillingState {
   BillingLoaded copyWith({
     List<OrderModel>? orders,
     String? selectedOrderId,
+    BillModel? selectedBill,
     PaymentMethod? selectedPaymentMethod,
     String? searchQuery,
     double? amountTendered,
@@ -56,6 +59,7 @@ class BillingLoaded extends BillingState {
     return BillingLoaded(
       orders: orders ?? this.orders,
       selectedOrderId: selectedOrderId ?? this.selectedOrderId,
+      selectedBill: selectedBill ?? this.selectedBill,
       selectedPaymentMethod:
           selectedPaymentMethod ?? this.selectedPaymentMethod,
       searchQuery: searchQuery ?? this.searchQuery,
@@ -67,6 +71,7 @@ class BillingLoaded extends BillingState {
   List<Object?> get props => [
     orders,
     selectedOrderId,
+    selectedBill,
     selectedPaymentMethod,
     searchQuery,
     amountTendered,

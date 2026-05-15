@@ -22,7 +22,9 @@ class PaymentSummaryPanel extends StatelessWidget {
     return BlocBuilder<BillingBloc, BillingState>(
       builder: (context, state) {
         // Validation check for loaded state
-        if (state is! BillingLoaded || state.selectedOrder == null) {
+        if (state is! BillingLoaded ||
+            state.selectedOrder == null ||
+            state.selectedBill == null) {
           return const SizedBox.shrink();
         }
 
@@ -54,7 +56,7 @@ class PaymentSummaryPanel extends StatelessWidget {
 
                     // Detailed Totals calculation card
                     PaymentTotalsCard(
-                      order: state.selectedOrder!,
+                      bill: state.selectedBill!,
                       amountTendered: state.amountTendered,
                     ),
 
