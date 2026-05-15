@@ -19,12 +19,8 @@ jobs:
         with:
           path: cashier_portal
 
-      - name: Checkout shared packages
-        uses: actions/checkout@v3
-        with:
-          repository: SalihSarang/rms_packages
-          path: packages
-          token: ${{ secrets.GH_PAT }}
+      - name: Configure Git for private dependencies
+        run: git config --global url."https://${{ secrets.GH_PAT }}@github.com/".insteadOf "https://github.com/"
 
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
