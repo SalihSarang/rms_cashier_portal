@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rms_shared_package/rms_shared_package.dart';
-
 import 'package:cashier_portal/features/billing/domain/repositories/billing_repository.dart';
 import 'package:cashier_portal/features/billing/presentation/bloc/billing_event.dart';
 import 'package:cashier_portal/features/billing/presentation/bloc/billing_state.dart';
@@ -78,7 +77,9 @@ class BillingBloc extends Bloc<BillingEvent, BillingState> {
         return BillingLoaded(
           orders: orders,
           selectedOrderId: firstOrder?.id,
-          selectedBill: firstOrder != null ? _getBillForOrder(firstOrder) : null,
+          selectedBill: firstOrder != null
+              ? _getBillForOrder(firstOrder)
+              : null,
           selectedPaymentMethod: PaymentMethod.card,
         );
       },
