@@ -24,7 +24,7 @@ class AppBarLogo extends StatelessWidget {
           ),
         ),
         const SizedBox(width: 16),
-        const RmsAppBarTitle('Cashier Portal'),
+        const RmsAppBarTitle('Billing Dashboard'),
       ],
     );
   }
