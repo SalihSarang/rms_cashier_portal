@@ -41,7 +41,6 @@ jobs:
     defaults:
       run:
         working-directory: cashier_portal
-    
     steps:
       - uses: actions/checkout@v3
         with: 
@@ -52,17 +51,15 @@ jobs:
         with:
           channel: stable
           cache: true
-
       - name: Install dependencies
         run: flutter pub get
-
       - name: Build Web
-        run: flutter build web
-
+        run: flutter build web --build-number=${{ github.run_number }}
       - name: Deploy to Firebase Hosting
         uses: FirebaseExtended/action-hosting-deploy@v0
         with: 
           repoToken: ${{ secrets.GITHUB_TOKEN }}
           firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_RMS_PROJECT }}
+          projectId: rms-project-b8903
           channelId: live
           entryPoint: cashier_portal
