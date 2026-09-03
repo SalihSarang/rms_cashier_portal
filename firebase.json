@@ -1,5 +1,6 @@
 {
     "hosting": {
+        "target": "cashier",
         "public": "build/web",
         "ignore": [
             "firebase.json",

@@ -63,3 +63,4 @@ jobs:
           projectId: rms-project-b8903
           channelId: live
           entryPoint: cashier_portal
+          target: cashier
