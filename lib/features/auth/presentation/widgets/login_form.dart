@@ -95,17 +95,17 @@ class _LoginFormState extends State<LoginForm> {
                 isPassword: true,
               ),
               const SizedBox(height: 8),
-              const Align(
-                alignment: Alignment.centerRight,
-                child: Text(
-                  'Forgot Password?',
-                  style: TextStyle(
-                    color: PrimaryColors.brandGreen,
-                    fontSize: 12,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-              ),
+              // const Align(
+              //   alignment: Alignment.centerRight,
+              //   child: Text(
+              //     'Forgot Password?',
+              //     style: TextStyle(
+              //       color: PrimaryColors.brandGreen,
+              //       fontSize: 12,
+              //       fontWeight: FontWeight.w500,
+              //     ),
+              //   ),
+              // ),
 
               const SizedBox(height: 24),
               BlocBuilder<AuthBloc, AuthState>(
@@ -144,26 +144,26 @@ class _LoginFormState extends State<LoginForm> {
                 },
               ),
               const SizedBox(height: 20),
-              const Divider(color: NeutralColors.glassBorder, height: 1),
-              const SizedBox(height: 20),
+              // const Divider(color: NeutralColors.glassBorder, height: 1),
+              // const SizedBox(height: 20),
 
-              const Center(
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Icon(
-                      Icons.help_outline,
-                      color: NeutralColors.icon,
-                      size: 14,
-                    ),
-                    SizedBox(width: 5),
-                    Text(
-                      'Need Help?',
-                      style: TextStyle(color: NeutralColors.icon, fontSize: 13),
-                    ),
-                  ],
-                ),
-              ),
+              // const Center(
+              //   child: Row(
+              //     mainAxisSize: MainAxisSize.min,
+              //     children: [
+              //       Icon(
+              //         Icons.help_outline,
+              //         color: NeutralColors.icon,
+              //         size: 14,
+              //       ),
+              //       SizedBox(width: 5),
+              //       Text(
+              //         'Need Help?',
+              //         style: TextStyle(color: NeutralColors.icon, fontSize: 13),
+              //       ),
+              //     ],
+              //   ),
+              // ),
             ],
           ),
         ),
