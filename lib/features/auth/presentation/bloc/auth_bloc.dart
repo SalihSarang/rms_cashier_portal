@@ -20,6 +20,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
        super(AuthInitial()) {
     on<CheckAuthEvent>(_onCheckAuthEvent);
     on<SignInEvent>(_onSignInEvent);
+    on<DemoSignInEvent>(_onDemoSignInEvent);
     on<SignOutEvent>(_onSignOutEvent);
   }
 
@@ -54,6 +55,24 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       }
     } catch (e) {
       emit(AuthError(e.toString()));
+    }
+  }
+
+  Future<void> _onDemoSignInEvent(
+    DemoSignInEvent event,
+    Emitter<AuthState> emit,
+  ) async {
+    emit(AuthLoading(isInitialCheck: false));
+    try {
+      final user = await _signInCashier.demoSignIn(sessionCode: event.sessionCode);
+      if (user != null) {
+        emit(Authenticated(user));
+      } else {
+        emit(AuthError('Failed to sign in as demo cashier. Please try again.'));
+      }
+    } catch (e) {
+      final message = e.toString().replaceFirst('Exception: ', '');
+      emit(AuthError(message));
     }
   }
 

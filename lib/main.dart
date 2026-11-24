@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:rms_shared_package/rms_shared_package.dart';
 import 'package:cashier_portal/firebase_options.dart';
 import 'package:cashier_portal/core/di/injector.dart';
 import 'package:cashier_portal/features/auth/presentation/bloc/auth_bloc.dart';
@@ -11,6 +12,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  await DemoSessionManager.initialize();
   setupDI();
 
   runApp(const MyApp());

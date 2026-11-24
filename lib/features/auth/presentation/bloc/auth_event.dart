@@ -9,4 +9,10 @@ class SignInEvent extends AuthEvent {
   SignInEvent(this.email, this.password);
 }
 
+class DemoSignInEvent extends AuthEvent {
+  final String? sessionCode;
+
+  DemoSignInEvent({this.sessionCode});
+}
+
 class SignOutEvent extends AuthEvent {}
