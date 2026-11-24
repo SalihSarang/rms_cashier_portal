@@ -6,4 +6,5 @@ abstract class BillingRepository {
     required OrderModel order,
     required PaymentMethod method,
   });
+  Future<RestaurantModel> getRestaurantSettings();
 }

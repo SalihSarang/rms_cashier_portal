@@ -19,4 +19,9 @@ class BillingRepositoryImpl implements BillingRepository {
   }) async {
     return await _remoteDataSource.processPayment(order, method);
   }
+
+  @override
+  Future<RestaurantModel> getRestaurantSettings() async {
+    return await _remoteDataSource.getRestaurantSettings();
+  }
 }

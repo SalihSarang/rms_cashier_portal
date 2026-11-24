@@ -14,14 +14,14 @@ class ProfileRemoteDataSourceImpl implements ProfileRemoteDataSource {
 
   @override
   Future<void> updateLastActive(String uid, DateTime lastActive) async {
-    await _firestore.collection(StaffDbConstants.staff).doc(uid).update({
+    await _firestore.rmsCollection(StaffDbConstants.staff).doc(uid).update({
       'lastActive': lastActive.millisecondsSinceEpoch,
     });
   }
 
   @override
   Future<void> updateShiftStatus(String uid, String status) async {
-    await _firestore.collection(StaffDbConstants.staff).doc(uid).update({
+    await _firestore.rmsCollection(StaffDbConstants.staff).doc(uid).update({
       'status': status,
     });
   }

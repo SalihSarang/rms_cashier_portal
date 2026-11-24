@@ -9,4 +9,8 @@ class SignInCashier {
   Future<StaffModel?> call(String email, String password) async {
     return await repository.signIn(email, password);
   }
+
+  Future<StaffModel?> demoSignIn({String? sessionCode}) async {
+    return await repository.signInAsDemoCashier(sessionCode: sessionCode);
+  }
 }
