@@ -7,14 +7,18 @@ import '../../presentation/widgets/receipt/receipt_pdf_template.dart';
 /// Implementation of [ReceiptPrintingRepository] using the `printing` package.
 class ReceiptPrintingRepositoryImpl implements ReceiptPrintingRepository {
   @override
-  Future<void> printReceipt(OrderModel order, {bool direct = false}) async {
+  Future<void> printReceipt(
+    OrderModel order, {
+    RestaurantModel? restaurant,
+    bool direct = false,
+  }) async {
     final dateStr = DateFormat('dd MMM yyyy, hh:mm a').format(order.createdAt);
 
     // Log receipt details for verification
-    _logReceiptDetails(order, dateStr);
+    _logReceiptDetails(order, dateStr, restaurant);
 
     // Generate PDF using the presentation template
-    final pdf = ReceiptPdfTemplate.build(order);
+    final pdf = ReceiptPdfTemplate.build(order, restaurant: restaurant);
     final pdfBytes = await pdf.save();
 
     if (direct) {
@@ -59,13 +63,24 @@ class ReceiptPrintingRepositoryImpl implements ReceiptPrintingRepository {
   }
 
   /// Logs the receipt details to the console in a structured format.
-  void _logReceiptDetails(OrderModel order, String dateStr) {
+  void _logReceiptDetails(
+    OrderModel order,
+    String dateStr,
+    RestaurantModel? restaurant,
+  ) {
+    final resName = (restaurant?.name.isNotEmpty ?? false)
+        ? restaurant!.name
+        : 'RMS PREMIUM DINE';
+    final resAddress = (restaurant?.address.isNotEmpty ?? false)
+        ? restaurant!.address
+        : '123 Culinary St, Foodie City';
+
     // ignore: avoid_print
     print('╔════════════════════════════════════════╗');
     // ignore: avoid_print
-    print('║           RMS PREMIUM DINE             ║');
+    print('║ ${resName.padRight(38)} ║');
     // ignore: avoid_print
-    print('║      123 Culinary St, Foodie City      ║');
+    print('║ ${resAddress.padRight(38)} ║');
     // ignore: avoid_print
     print('╠════════════════════════════════════════╣');
     // ignore: avoid_print

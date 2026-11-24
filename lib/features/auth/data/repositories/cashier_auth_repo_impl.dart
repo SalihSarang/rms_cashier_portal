@@ -18,6 +18,11 @@ class CashierAuthRepoImpl implements AuthRepository {
   }
 
   @override
+  Future<StaffModel?> signInAsDemoCashier({String? sessionCode}) async {
+    return await remoteDataSource.signInAsDemoCashier(sessionCode: sessionCode);
+  }
+
+  @override
   Future<void> signOut() async {
     return await remoteDataSource.signOut();
   }

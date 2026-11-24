@@ -4,6 +4,7 @@ import 'package:rms_shared_package/rms_shared_package.dart';
 abstract class BillingRemoteDataSource {
   Stream<List<OrderModel>> getOrders();
   Future<void> processPayment(OrderModel order, PaymentMethod method);
+  Future<RestaurantModel> getRestaurantSettings();
 }
 
 class BillingRemoteDataSourceImpl implements BillingRemoteDataSource {
@@ -14,7 +15,7 @@ class BillingRemoteDataSourceImpl implements BillingRemoteDataSource {
   @override
   Stream<List<OrderModel>> getOrders() {
     return _firestore
-        .collection(OrderDbConstants.orders)
+        .rmsCollection(OrderDbConstants.orders)
         .where('orderStatus', isEqualTo: 'billRequested')
         .snapshots()
         .map((snapshot) {
@@ -34,17 +35,17 @@ class BillingRemoteDataSourceImpl implements BillingRemoteDataSource {
     return _firestore.runTransaction((transaction) async {
       // 1. Reference the master order document
       final orderRef = _firestore
-          .collection(OrderDbConstants.orders)
+          .rmsCollection(OrderDbConstants.orders)
           .doc(order.id);
 
       // 2. Reference the kitchen queue document
       final kitchenQueueRef = _firestore
-          .collection(KitchenDbConstants.kitchenQueue)
+          .rmsCollection(KitchenDbConstants.kitchenQueue)
           .doc(order.id);
 
       // 3. Reference the table document
       final tableRef = _firestore
-          .collection(TableDbConstants.tables)
+          .rmsCollection(TableDbConstants.tables)
           .doc(order.tableId);
 
       // Fetch the table document to get current occupancy
@@ -80,5 +81,27 @@ class BillingRemoteDataSourceImpl implements BillingRemoteDataSource {
         transaction.update(tableRef, updates);
       }
     });
+  }
+
+  @override
+  Future<RestaurantModel> getRestaurantSettings() async {
+    final doc = await _firestore
+        .rmsCollection(SettingsDbConstants.restaurantSettings)
+        .doc(SettingsDbConstants.businessProfileDoc)
+        .get();
+
+    if (doc.exists && doc.data() != null) {
+      return RestaurantModel.fromJson(doc.data()!);
+    }
+    return const RestaurantModel(
+      name: 'RMS Premium Dine',
+      address: '',
+      phone: '',
+      email: '',
+      fssaiNumber: '',
+      gstin: '',
+      cgstRate: 2.5,
+      sgstRate: 2.5,
+    );
   }
 }

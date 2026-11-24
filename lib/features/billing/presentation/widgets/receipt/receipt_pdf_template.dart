@@ -13,7 +13,7 @@ import 'components/receipt_footer.dart';
 /// representation of the order on paper.
 class ReceiptPdfTemplate {
   /// Builds a [pw.Document] for the given [order].
-  static pw.Document build(OrderModel order) {
+  static pw.Document build(OrderModel order, {RestaurantModel? restaurant}) {
     final pdf = pw.Document();
 
     pdf.addPage(
@@ -21,13 +21,27 @@ class ReceiptPdfTemplate {
         pageFormat: PdfPageFormat.roll80,
         margin: const pw.EdgeInsets.all(12),
         build: (pw.Context context) {
+          final subTotal = order.totalAmount;
+          final cgstRate = restaurant?.cgstRate ?? 2.5;
+          final sgstRate = restaurant?.sgstRate ?? 2.5;
+          final cgst = subTotal * (cgstRate / 100);
+          final sgst = subTotal * (sgstRate / 100);
+          final grandTotal = subTotal + cgst + sgst;
+
           return pw.Column(
             crossAxisAlignment: pw.CrossAxisAlignment.center,
             children: [
-              ReceiptHeader(),
+              ReceiptHeader(restaurant: restaurant),
               ReceiptOrderInfo(order: order),
               ReceiptItemsTable(items: order.orderedMenu),
-              ReceiptSummary(totalAmount: order.totalAmount),
+              ReceiptSummary(
+                subTotal: subTotal,
+                cgst: cgst,
+                sgst: sgst,
+                grandTotal: grandTotal,
+                cgstRate: cgstRate,
+                sgstRate: sgstRate,
+              ),
               ReceiptFooter(),
             ],
           );

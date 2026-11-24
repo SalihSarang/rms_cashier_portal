@@ -1,6 +1,7 @@
 import 'package:cashier_portal/features/billing/presentation/pages/billing_dashboard_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:rms_design_system/rms_design_system.dart';
 import '../../../profile/presentation/bloc/shift_bloc.dart';
 import '../../../profile/presentation/bloc/shift_event.dart';
 import '../bloc/auth_bloc.dart';
@@ -37,7 +38,12 @@ class _AuthGateState extends State<AuthGate> {
       child: BlocBuilder<AuthBloc, AuthState>(
         builder: (context, state) {
           if (state is Authenticated) {
-            return const BillingDashboardPage();
+            return RmsDemoBannerWrapper(
+              onExit: () {
+                context.read<AuthBloc>().add(SignOutEvent());
+              },
+              child: const BillingDashboardPage(),
+            );
           }
 
           if (state is AuthInitial ||

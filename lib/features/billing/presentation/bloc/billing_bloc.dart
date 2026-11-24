@@ -14,8 +14,9 @@ class BillingBloc extends Bloc<BillingEvent, BillingState> {
   final BillingRepository repository;
   final ReceiptPrintingRepository printingRepository;
   StreamSubscription? _queueSubscription;
+  RestaurantModel? _restaurantSettings;
 
-  static const mockRestaurant = RestaurantModel(
+  static const _defaultRestaurant = RestaurantModel(
     name: 'RMS Premium Dine',
     address: '123 Culinary Street, Foodie City',
     phone: '+1 234 567 890',
@@ -43,6 +44,13 @@ class BillingBloc extends Bloc<BillingEvent, BillingState> {
     Emitter<BillingState> emit,
   ) async {
     emit(BillingLoading());
+
+    // Fetch live restaurant settings for accurate taxes, branding, and receipts
+    try {
+      _restaurantSettings = await repository.getRestaurantSettings();
+    } catch (_) {
+      _restaurantSettings = _defaultRestaurant;
+    }
 
     await _queueSubscription?.cancel();
 
@@ -115,7 +123,7 @@ class BillingBloc extends Bloc<BillingEvent, BillingState> {
     return BillModel.fromOrder(
       billId: 'BILL-${order.id.split('-').last.toUpperCase()}',
       order: order,
-      restaurant: mockRestaurant,
+      restaurant: _restaurantSettings ?? _defaultRestaurant,
     );
   }
 
@@ -172,7 +180,11 @@ class BillingBloc extends Bloc<BillingEvent, BillingState> {
       try {
         // Trigger printing before or as part of proceeding the bill
         // In many POS systems, the receipt is printed as the payment is confirmed.
-        await printingRepository.printReceipt(currentOrder, direct: true);
+        await printingRepository.printReceipt(
+          currentOrder,
+          restaurant: _restaurantSettings,
+          direct: true,
+        );
 
         await repository.processPayment(
           order: currentOrder,
@@ -190,7 +202,10 @@ class BillingBloc extends Bloc<BillingEvent, BillingState> {
     Emitter<BillingState> emit,
   ) async {
     try {
-      await printingRepository.printReceipt(event.order);
+      await printingRepository.printReceipt(
+        event.order,
+        restaurant: _restaurantSettings,
+      );
     } catch (e) {
       // We don't want to block the UI for a manual print failure,
       // but we could emit a transient error state if needed.
